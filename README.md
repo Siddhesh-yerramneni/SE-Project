@@ -20,14 +20,7 @@ Advanced Search and Filtering:
 
 Users can search for books using filters such as genre, author, publication year, or rating, making it easier to find books that suit their interests.
 The platform includes a powerful search engine to quickly locate books by title, author, or keyword.
-User Profiles :
 
-Users can create profiles, track their reading history, and share their book reviews with others.
-
-Admin Dashboard:
-
-Admins can manage users, books, and reviews through an intuitive dashboard.
-Admins have the ability to handle flagged reviews, manage content, and ensure compliance with community guidelines.
 
 Group members:
 Sri Surya Tarun Narala - Frontend
