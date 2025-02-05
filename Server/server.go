@@ -5,8 +5,18 @@ import (
 	database "github.com/siddhesh-yerramneni/SE-Project/Server/Database"
 )
 
-func main() {
+func init() {
 	database.ConnectDB()
+}
+
+func main() {
+	sqlDb, err := database.DBConn.DB()
+
+	if err != nil {
+		panic("Error in sql connection!")
+	}
+	defer sqlDb.Close()
+
 	app := fiber.New()
 
 	app.Get("/", func(c *fiber.Ctx) error {

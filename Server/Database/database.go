@@ -3,6 +3,7 @@ package database
 import (
 	"log"
 
+	model "github.com/siddhesh-yerramneni/SE-Project/Server/Models"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -19,7 +20,9 @@ func ConnectDB() {
 	if err != nil {
 		panic("Database connection failed.")
 	}
-	log.Println(("Connections successful!"))
+	log.Println(("Connection is successful!"))
+
+	db.AutoMigrate(new(model.User))
 
 	DBConn = db
 }
