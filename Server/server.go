@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/gofiber/fiber/v2"
 	database "github.com/siddhesh-yerramneni/SE-Project/Server/Database"
+	router "github.com/siddhesh-yerramneni/SE-Project/Server/Router"
 )
 
 func init() {
@@ -19,9 +20,11 @@ func main() {
 
 	app := fiber.New()
 
-	app.Get("/", func(c *fiber.Ctx) error {
-		return c.SendString("Hello, World!")
-	})
+	// app.Get("/", func(c *fiber.Ctx) error {
+	// 	return c.SendString("Hello, World!")
+	// })
+
+	router.SetupRoutes(app)
 
 	app.Listen(":3000")
 }
