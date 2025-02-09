@@ -20,7 +20,7 @@ func ConnectDB() {
 	if err != nil {
 		panic("Database connection failed.")
 	}
-	log.Println(("Connection is successful!"))
+	log.Println(("Database connection is successful!"))
 
 	db.AutoMigrate(new(model.User))
 
