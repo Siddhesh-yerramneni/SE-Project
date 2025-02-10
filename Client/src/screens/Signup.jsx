@@ -4,140 +4,123 @@ import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
   const [formData, setFormData] = useState({ username: "", email: "", password: "" });
-  const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  {/*submit button handling function*/}
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(""); // Reset error state
+
+    setSuccessMessage("");
+    setErrorMessage("");
+
     try {
       const res = await signup(formData);
-      alert(res.data.msg);
-      navigate("/login"); // Redirect to login after signup
+      if (res && res.msg) {
+        setSuccessMessage(res.msg);
+        setTimeout(() => {
+          navigate("/login");
+        }, 1000);
+      }
     } catch (error) {
-      setError(error.response?.data?.msg || "Signup failed");
+      console.error("Signup Error:", error);
+      setErrorMessage(error.msg || "Signup failed");
     }
   };
 
+
   return (
-    <div className="container">
-      <div className="signup-box">
-        <h2 className="title">Sign Up</h2>
-        {error && <div className="error-alert">{error}</div>}
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="email">Email</label>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-orange-300 via-orange-400 to-orange-500">
+      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+        <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
+          Sign Up
+        </h2>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Email Field */}
+          <div>
+            <label
+              htmlFor="email"
+              className="block text-gray-700 font-semibold mb-2"
+            >
+              Email
+            </label>
             <input
               type="email"
               id="email"
               name="email"
-              required
-              onChange={handleChange}
               value={formData.email}
+              onChange={handleChange}
+              required
               placeholder="Enter your email"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-400 focus:border-orange-400"
             />
           </div>
-          <div className="form-group">
-            <label htmlFor="username">Username</label>
+
+          {/* Username Field */}
+          <div>
+            <label
+              htmlFor="username"
+              className="block text-gray-700 font-semibold mb-2"
+            >
+              Username
+            </label>
             <input
               type="text"
               id="username"
               name="username"
-              required
-              onChange={handleChange}
               value={formData.username}
+              onChange={handleChange}
+              required
               placeholder="Enter your username"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-400 focus:border-orange-400"
             />
           </div>
-          <div className="form-group">
-            <label htmlFor="password">Password</label>
+
+          {/* Password Field */}
+          <div>
+            <label
+              htmlFor="password"
+              className="block text-gray-700 font-semibold mb-2"
+            >
+              Password
+            </label>
             <input
               type="password"
               id="password"
               name="password"
-              required
-              onChange={handleChange}
               value={formData.password}
+              onChange={handleChange}
+              required
               placeholder="Enter your password"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-400 focus:border-orange-400"
             />
           </div>
-          <button type="submit" className="submit-btn">Sign Up</button>
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            className="w-full bg-orange-500 text-white font-semibold py-2 rounded-md shadow-md hover:bg-orange-600 transition duration-300"
+          >
+            Sign Up
+          </button>
         </form>
+        {/* Display Success Message */}
+        {successMessage && (
+          <p className="text-green-600 text-center mt-4">{successMessage}</p>
+        )}
+
+        {/* Display Error Message */}
+        {errorMessage && (
+          <p className="text-red-600 text-center mt-4">{errorMessage}</p>
+        )}
       </div>
     </div>
   );
 };
 
 export default Signup;
-
-
-const styles = {
-  container: {
-    minHeight: "100vh",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#f4f4f4",
-  },
-  signupBox: {
-    backgroundColor: "#fb7185",
-    padding: "2rem",
-    borderRadius: "10px",
-    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-    width: "100%",
-    maxWidth: "400px",
-  },
-  title: {
-    fontSize: "24px",
-    fontWeight: "bold",
-    textAlign: "center",
-    color: "#fff",
-    marginBottom: "20px",
-  },
-  errorAlert: {
-    color: "#b91c1c",
-    backgroundColor: "#fee2e2",
-    padding: "0.5rem",
-    borderRadius: "5px",
-    textAlign: "center",
-    marginBottom: "1rem",
-  },
-  formGroup: {
-    marginBottom: "1rem",
-  },
-  label: {
-    display: "block",
-    fontWeight: "600",
-    color: "#000",
-    marginBottom: "0.5rem",
-  },
-  input: {
-    width: "100%",
-    padding: "0.5rem",
-    border: "1px solid #cbd5e1",
-    borderRadius: "5px",
-    outline: "none",
-    transition: "border-color 0.3s ease-in-out",
-  },
-  inputFocus: {
-    borderColor: "#2563eb",
-  },
-  submitBtn: {
-    width: "100%",
-    backgroundColor: "#fff",
-    color: "#000",
-    padding: "0.75rem",
-    borderRadius: "5px",
-    fontWeight: "600",
-    transition: "background-color 0.3s",
-    border: "1px solid #ccc",
-    cursor: "pointer",
-  },
-  submitBtnHover: {
-    backgroundColor: "#e5e7eb",
-  },
-};
