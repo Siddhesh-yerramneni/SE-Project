@@ -134,6 +134,22 @@ const Home = () => {
       </div>
     )}
   </div>
+
+ {/* Call to Action Section */}
+ <section className="py-16 bg-navy-blue">
+        <div className="container mx-auto text-center">
+          <h2 className="text-2xl sm:text-3xl font-bold text-cream-white">
+            Ready to start your reading journey?
+          </h2>
+          <p className="text-lg sm:text-xl text-cream-white mt-4">
+            Join our community of book lovers today!
+          </p>
+          <Link to="/signup" className="mt-8 inline-block bg-vibrant-orange text-white font-semibold py-3 px-8 rounded-full hover:bg-orange-600 transition duration-300">
+            Sign Up Now
+          </Link>
+        </div>
+      </section>
+
 </section>
 
 
