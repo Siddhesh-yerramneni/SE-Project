@@ -22,7 +22,8 @@ func main() {
 	app := fiber.New()
 
 	app.Use(cors.New(cors.Config{
-		AllowOrigins: "http://localhost:5173",
+		// Change the Allow origin to your local host server for time being
+		AllowOrigins: "http://localhost:5174",
 		AllowMethods: "GET, POST, OPTIONS",
 		AllowHeaders: "Content-Type, Authorization",
 	}))
