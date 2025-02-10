@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 	database "github.com/siddhesh-yerramneni/SE-Project/Server/Database"
 	router "github.com/siddhesh-yerramneni/SE-Project/Server/Router"
 )
@@ -19,6 +20,12 @@ func main() {
 	defer sqlDb.Close()
 
 	app := fiber.New()
+
+	app.Use(cors.New(cors.Config{
+		AllowOrigins: "http://localhost:5173",
+		AllowMethods: "GET, POST, OPTIONS",
+		AllowHeaders: "Content-Type, Authorization",
+	}))
 
 	// app.Get("/", func(c *fiber.Ctx) error {
 	// 	return c.SendString("Hello, World!")
