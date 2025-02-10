@@ -4,99 +4,140 @@ import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
   const [formData, setFormData] = useState({ username: "", email: "", password: "" });
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  // const handleChange = (e) => {
-  //   setFormData({ ...formData, [e.target.name]: e.target.value });
-  // };
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     const res = await signup(formData);
-  //     alert(res.data.msg);
-  //     navigate("/login"); // Redirect to login after signup
-  //   } catch (error) {
-  //     alert(error.response?.data?.msg || "Signup failed");
-  //   }
-  // };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError(""); // Reset error state
+    try {
+      const res = await signup(formData);
+      alert(res.data.msg);
+      navigate("/login"); // Redirect to login after signup
+    } catch (error) {
+      setError(error.response?.data?.msg || "Signup failed");
+    }
+  };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-zinc-200">
-      <div className=" bg-rose-400 p-8 rounded-lg shadow-md w-full max-w-md">
-        <h2 className="text-2xl font-bold text-center text-lightBlue-700 mb-6">Sign Up</h2>
-        {/* Error Alert */}
-        {/* {error && (
-          <div className="flex items-center p-4 mb-4 text-sm text-red-800 border border-red-300 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 dark:border-red-800" role="alert">
-            <svg className="flex-shrink-0 inline w-4 h-4 mr-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
-            </svg>
-            <div>
-              <span className="font-medium">Danger alert!</span>{error}
-            </div>
-          </div>
-        )} */}
-        {/* <form onSubmit={handleSubmit}> */}
-        <form>
-          {/* Email Field */}
-          {/* <div className="mb-4">
-            <label htmlFor="email" className="block text-black font-semibold mb-2">Email</label>
+    <div className="container">
+      <div className="signup-box">
+        <h2 className="title">Sign Up</h2>
+        {error && <div className="error-alert">{error}</div>}
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="email">Email</label>
             <input
               type="email"
               id="email"
+              name="email"
               required
               onChange={handleChange}
-              className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-lightBlue-500"
+              value={formData.email}
               placeholder="Enter your email"
             />
-          </div> */}
-
-          {/* Username Field */}
-          <div className="mb-4">
-            <label htmlFor="username" className="block text-black font-semibold mb-2">Username</label>
+          </div>
+          <div className="form-group">
+            <label htmlFor="username">Username</label>
             <input
               type="text"
               id="username"
+              name="username"
               required
-              // onChange={handleChange}
-              className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-lightBlue-500"
+              onChange={handleChange}
+              value={formData.username}
               placeholder="Enter your username"
             />
           </div>
-
-          {/* Password Field */}
-          <div className="mb-6">
-            <label htmlFor="password" className="block text-black font-semibold mb-2">Password</label>
+          <div className="form-group">
+            <label htmlFor="password">Password</label>
             <input
               type="password"
               id="password"
+              name="password"
               required
-              // onChange={handleChange}
-              className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-lightBlue-500"
+              onChange={handleChange}
+              value={formData.password}
               placeholder="Enter your password"
             />
           </div>
-
-          {/* Submit Button */}
-          <button
-            type="submit"
-            className="w-full bg-white text-black py-3 rounded-lg font-semibold hover:bg-zinc-300 transition duration-300 border"
-          >
-            Sign Up
-          </button>
-          {/* <OAuth/> */}
+          <button type="submit" className="submit-btn">Sign Up</button>
         </form>
-
-        {/* Login Link */}
-        {/* <p className=" text-black text-center mt-4">
-          Already have an account?{' '}
-          <a href="/login" className="text-white hover:underline">
-            Login
-          </a>
-        </p> */}
       </div>
     </div>
   );
 };
 
 export default Signup;
+
+
+const styles = {
+  container: {
+    minHeight: "100vh",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#f4f4f4",
+  },
+  signupBox: {
+    backgroundColor: "#fb7185",
+    padding: "2rem",
+    borderRadius: "10px",
+    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+    width: "100%",
+    maxWidth: "400px",
+  },
+  title: {
+    fontSize: "24px",
+    fontWeight: "bold",
+    textAlign: "center",
+    color: "#fff",
+    marginBottom: "20px",
+  },
+  errorAlert: {
+    color: "#b91c1c",
+    backgroundColor: "#fee2e2",
+    padding: "0.5rem",
+    borderRadius: "5px",
+    textAlign: "center",
+    marginBottom: "1rem",
+  },
+  formGroup: {
+    marginBottom: "1rem",
+  },
+  label: {
+    display: "block",
+    fontWeight: "600",
+    color: "#000",
+    marginBottom: "0.5rem",
+  },
+  input: {
+    width: "100%",
+    padding: "0.5rem",
+    border: "1px solid #cbd5e1",
+    borderRadius: "5px",
+    outline: "none",
+    transition: "border-color 0.3s ease-in-out",
+  },
+  inputFocus: {
+    borderColor: "#2563eb",
+  },
+  submitBtn: {
+    width: "100%",
+    backgroundColor: "#fff",
+    color: "#000",
+    padding: "0.75rem",
+    borderRadius: "5px",
+    fontWeight: "600",
+    transition: "background-color 0.3s",
+    border: "1px solid #ccc",
+    cursor: "pointer",
+  },
+  submitBtnHover: {
+    backgroundColor: "#e5e7eb",
+  },
+};
