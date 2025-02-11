@@ -48,3 +48,32 @@ func AddBook(c *fiber.Ctx) error {
 		},
 	})
 }
+func DeleteBook(c *fiber.Ctx) error {
+	// Get book ID from the URL parameter
+	id := c.Params("id")
+
+	// Check if book exists
+	var book model.Book
+	result := Database.DBConn.First(&book, id)
+	if result.Error != nil {
+		return c.Status(404).JSON(fiber.Map{
+			"statusText": "Not Found",
+			"msg":        "Book not found",
+		})
+	}
+
+	// Delete the book
+	if err := Database.DBConn.Delete(&book).Error; err != nil {
+		return c.Status(500).JSON(fiber.Map{
+			"statusText": "Internal Server Error",
+			"msg":        "Error deleting book",
+			"error":      err.Error(),
+		})
+	}
+
+	return c.Status(200).JSON(fiber.Map{
+		"statusText": "OK",
+		"msg":        "Book deleted successfully",
+	})
+}
+
