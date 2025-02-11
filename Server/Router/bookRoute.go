@@ -8,4 +8,7 @@ import (
 func SetupRoutes(app *fiber.App) {
 	app.Get("/", controller.HomePage)
 	app.Post("/addBook", controller.AddBook)
+	app.Delete("/deleteBook/:id", controller.DeleteBook)
+	app.Get("/getBook/:id", controller.GetBook)
+	app.Get("/getBooks", controller.GetBooks)
 }
