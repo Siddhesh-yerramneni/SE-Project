@@ -19,19 +19,22 @@ const Login = () => {
     setErrorMessage("");
 
     try {
-        const res = await login(formData);
-        if (res && res.msg) {
-            setSuccessMessage(res.msg);
-            setTimeout(() => {
-                navigate("/");
-            }, 2000);
-        }
+      const res = await login(formData);
+      if (res && res.user) {
+        localStorage.setItem("currentUser", JSON.stringify(res.user));
+        setSuccessMessage(res.msg || "Login successful");
+        setTimeout(() => {
+          navigate("/");
+          window.location.reload(); // Optional: reloads to update header immediately
+        }, 2000);
+      } else {
+        setErrorMessage("Invalid response from server");
+      }
     } catch (error) {
-        console.error("Login Error:", error);
-        setErrorMessage(error.msg || "Login failed");
+      console.error("Login Error:", error);
+      setErrorMessage(error.msg || "Login failed");
     }
-};
-
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-orange-300 via-orange-400 to-orange-500">
@@ -98,7 +101,6 @@ const Login = () => {
         {errorMessage && (
           <p className="text-red-600 text-center mt-4">{errorMessage}</p>
         )}
-
 
         {/* Signup Link */}
         <p className="text-center text-gray-600 mt-4">

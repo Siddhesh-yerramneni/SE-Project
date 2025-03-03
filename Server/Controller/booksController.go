@@ -40,7 +40,7 @@ func AddBook(c *fiber.Ctx) error {
 
 	return c.Status(201).JSON(fiber.Map{
 		"statusText": "OK",
-		"msg":        "User registered successfully!",
+		"msg":        "Book added successfully!",
 		"book": fiber.Map{
 			"id":       book.ID,
 			"bookname": book.Bookname,
