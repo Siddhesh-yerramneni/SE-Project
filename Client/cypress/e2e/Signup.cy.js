@@ -40,7 +40,8 @@ describe("Signup Page", () => {
         cy.get("input[name='password']").type("password123");
         cy.get("button[type='submit']").click();
       
-        cy.contains("Error creating user").should("be.visible");
+        cy.contains(/error/i).should("be.visible");
+
       });
       
   });

@@ -26,7 +26,7 @@ const AddBook = () => {
     try {
       const payload = {
         ...formData,
-        price: parseFloat(formData.price), // ✅ Ensure price is a number
+        price: parseFloat(formData.price), 
       };
 
       const res = await addBook(payload);
@@ -34,7 +34,7 @@ const AddBook = () => {
         setSuccessMessage(res.msg || "Book added successfully!");
         setTimeout(() => {
           navigate("/allBooks");
-        }, 1500);
+        }, 3000); 
       } else {
         setErrorMessage("Unexpected server response.");
       }
