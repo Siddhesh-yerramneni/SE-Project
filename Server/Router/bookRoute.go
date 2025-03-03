@@ -1,0 +1,13 @@
+package router
+
+import (
+	"github.com/gofiber/fiber/v2"
+	controller "github.com/siddhesh-yerramneni/SE-Project/Server/Controller"
+)
+
+func SetupRoutes(app *fiber.App) {
+	app.Get("/", controller.HomePage)
+	app.Post("/addBook", controller.AddBook)
+	app.Get("/homeBooks", controller.GetBooks)
+
+}
