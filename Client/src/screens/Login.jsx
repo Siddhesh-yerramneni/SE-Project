@@ -24,7 +24,7 @@ const Login = () => {
             setSuccessMessage(res.msg);
             setTimeout(() => {
                 navigate("/");
-            }, 1000);
+            }, 2000);
         }
     } catch (error) {
         console.error("Login Error:", error);
@@ -49,6 +49,7 @@ const Login = () => {
               Username
             </label>
             <input
+              id="username"
               type="text"
               name="username"
               value={formData.username}
@@ -68,6 +69,7 @@ const Login = () => {
               Password
             </label>
             <input
+              id="password"
               type="password"
               name="password"
               value={formData.password}

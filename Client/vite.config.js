@@ -7,4 +7,9 @@ export default defineConfig({
   plugins: [react(),
     tailwindcss()
   ],
+  test: {
+    globals: true, // Enables `describe`, `test`, and `expect` globally
+    environment: "jsdom", // Ensures JSDOM is used
+    setupFiles: "./src/setupTests.js", // Runs before tests
+  },
 })
