@@ -49,6 +49,7 @@ const Login = () => {
               Username
             </label>
             <input
+              id="username"
               type="text"
               name="username"
               value={formData.username}
@@ -68,6 +69,7 @@ const Login = () => {
               Password
             </label>
             <input
+              id="password"
               type="password"
               name="password"
               value={formData.password}
