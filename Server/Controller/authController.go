@@ -48,7 +48,7 @@ func Signup(c *fiber.Ctx) error {
 		return c.Status(500).JSON(fiber.Map{
 			"statusText": "Internal Server Error",
 			"msg":        "Error creating user",
-			"error":      result.Error.Error(), // ✅ Return the actual database error
+			"error":      result.Error.Error(), //  Return the actual database error
 		})
 	}
 
