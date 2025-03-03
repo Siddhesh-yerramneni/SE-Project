@@ -6,20 +6,20 @@ const Home = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchHomeBooks = async () => {
-      try {
-        const res = await fetch('/api/book/homeBooks');
-        const data = await res.json();
-        setHomeBooks(data);
-      } catch (error) {
-        setError('Failed to fetch books. Please try again later.');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchHomeBooks();
-  }, []);
+  // useEffect(() => {
+  //   const fetchHomeBooks = async () => {
+  //     try {
+  //       const res = await fetch('/api/book/homeBooks');
+  //       const data = await res.json();
+  //       setHomeBooks(data);
+  //     } catch (error) {
+  //       setError('Failed to fetch books. Please try again later.');
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   };
+  //   fetchHomeBooks();
+  // }, []);
 
   return (
     <div className='shadow'>

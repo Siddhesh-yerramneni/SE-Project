@@ -24,7 +24,7 @@ const Login = () => {
             setSuccessMessage(res.msg);
             setTimeout(() => {
                 navigate("/");
-            }, 1000);
+            }, 2000);
         }
     } catch (error) {
         console.error("Login Error:", error);

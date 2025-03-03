@@ -43,7 +43,7 @@ describe("Login Component", () => {
     fireEvent.change(screen.getByPlaceholderText("Enter your password"), { target: { value: "test1" } });
     fireEvent.submit(screen.getByRole("button", { name: /login/i }));
 
-    await waitFor(() => expect(screen.getByText(/Login successful!/i)).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByText(/Login successful/i)).toBeInTheDocument());
   });
 
   test("handles failed login", async () => {
