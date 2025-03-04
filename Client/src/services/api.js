@@ -4,47 +4,40 @@ const API_URL = "http://127.0.0.1:3000";
 
 // Signup API call
 export const signup = async (data) => {
-    console.log("signup api=>", data);
-    try {
-        const response = await axios.post(`${API_URL}/signup`, data);
-        console.log("Signup Response:", response.data);
-        return response.data; //Return success response
-    } catch (error) {
-        console.error("Signup Error:", error.response ? error.response.data : error.message); 
-        throw error.response ? error.response.data : { msg: "Signup failed" };   // Return error response
-    }
+  try {
+    const response = await axios.post(`${API_URL}/signup`, data);
+    return response.data;
+  } catch (error) {
+    throw error.response ? error.response.data : { msg: "Signup failed" };
+  }
 };
 
 // Login API call
 export const login = async (data) => {
-    console.log("login api=>", data);
-    try {
-        const response = await axios.post(`${API_URL}/login`, data);
-        console.log("Login Response:", response.data);
-        return response.data; // Return success response
-    } catch (error) {
-        console.error("Login Error:", error.response ? error.response.data : error.message);
-        // Return error response properly
-        throw error.response ? error.response.data : { msg: "Login failed" };
-    }
+  try {
+    const response = await axios.post(`${API_URL}/login`, data);
+    return response.data;
+  } catch (error) {
+    throw error.response ? error.response.data : { msg: "Login failed" };
+  }
 };
 
-export const addBook = (data) =>
-    axios.post(`${API_URL}/addBook`, data)
-        .then(response => {
-            console.log("AddBook Response:", response.data);
-            return response.data;
-        })
-        .catch(error => {
-            console.error("AddBook Error:", error.response ? error.response.data : error.message);
-        });
+// Add Book API call
+export const addBook = async (data) => {
+  try {
+    const response = await axios.post(`${API_URL}/addBook`, data);
+    return response.data;
+  } catch (error) {
+    throw error.response ? error.response.data : { msg: "Failed to add book." };
+  }
+};
 
-export const getHomePage = () =>
-    axios.get(`${API_URL}/`)
-        .then(response => {
-            console.log("HomePage Response:", response.data);
-            return response.data;
-        })
-        .catch(error => {
-            console.error("HomePage Error:", error.response ? error.response.data : error.message);
-        });
+// Home Page API call (optional)
+export const getHomePage = async () => {
+  try {
+    const response = await axios.get(`${API_URL}/`);
+    return response.data;
+  } catch (error) {
+    throw error.response ? error.response.data : { msg: "Failed to load home page." };
+  }
+};

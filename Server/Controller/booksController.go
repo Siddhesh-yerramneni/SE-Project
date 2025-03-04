@@ -28,19 +28,19 @@ func AddBook(c *fiber.Ctx) error {
 		})
 	}
 
-	// Store user in database correctly
+	// Store book in database correctly
 	result := Database.DBConn.Create(&book)
 	if result.Error != nil {
 		return c.Status(500).JSON(fiber.Map{
 			"statusText": "Internal Server Error",
-			"msg":        "Error creating user",
+			"msg":        "Error adding book",
 			"error":      result.Error.Error(), //  Return the actual database error
 		})
 	}
 
 	return c.Status(201).JSON(fiber.Map{
 		"statusText": "OK",
-		"msg":        "User registered successfully!",
+		"msg":        "Book added successfully!",
 		"book": fiber.Map{
 			"id":       book.ID,
 			"bookname": book.Bookname,
