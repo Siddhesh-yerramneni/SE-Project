@@ -52,3 +52,13 @@ func TestGetBook(t *testing.T) {
 
 	assert.True(t, resp.StatusCode == http.StatusOK || resp.StatusCode == http.StatusNotFound)
 }
+
+func TestDeleteBook(t *testing.T) {
+	app := fiber.New()
+	app.Delete("/books/:id", controller.DeleteBook)
+
+	req := httptest.NewRequest("DELETE", "/books/1", nil)
+	resp, _ := app.Test(req, -1)
+
+	assert.True(t, resp.StatusCode == http.StatusOK || resp.StatusCode == http.StatusNotFound)
+}
