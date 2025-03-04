@@ -42,3 +42,13 @@ func TestGetBooks(t *testing.T) {
 
 	assert.Equal(t, http.StatusOK, resp.StatusCode)
 }
+
+func TestGetBook(t *testing.T) {
+	app := fiber.New()
+	app.Get("/books/:id", controller.GetBook)
+
+	req := httptest.NewRequest("GET", "/books/1", nil)
+	resp, _ := app.Test(req, -1)
+
+	assert.True(t, resp.StatusCode == http.StatusOK || resp.StatusCode == http.StatusNotFound)
+}
