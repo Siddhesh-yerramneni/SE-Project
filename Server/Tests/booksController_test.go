@@ -33,3 +33,12 @@ func TestAddBook(t *testing.T) {
 }
 
 
+func TestGetBooks(t *testing.T) {
+	app := fiber.New()
+	app.Get("/books", controller.GetBooks)
+
+	req := httptest.NewRequest("GET", "/books", nil)
+	resp, _ := app.Test(req, -1)
+
+	assert.Equal(t, http.StatusOK, resp.StatusCode)
+}
