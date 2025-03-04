@@ -8,6 +8,15 @@ import (
 	"gorm.io/gorm"
 )
 
+type DBInterface interface {
+	Create(value interface{}) *gorm.DB
+	Where(query interface{}, args ...interface{}) *gorm.DB
+	First(dest interface{}, conds ...interface{}) *gorm.DB
+}
+
+// Change this to use the interface
+var DBConn DBInterface
+
 // HashPassword - Hashes the user's password
 func HashPassword(password string) (string, error) {
 	bytes, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
