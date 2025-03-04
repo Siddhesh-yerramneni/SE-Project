@@ -53,20 +53,20 @@ During Sprint 2, the frontend team focused on:
 **Test File:** `tests/unit/Home.test.jsx`
 
 #### **Tests Implemented:**
--Renders the hero section with correct text.
--Displays the "Browse Books" button.
--Displays featured categories like Fiction, Non-Fiction, and Science Fiction.
--Navigates to the AllBooks page when clicking the "Browse Books" button.
+- Renders the hero section with correct text.
+- Displays the "Browse Books" button.
+- Displays featured categories like Fiction, Non-Fiction, and Science Fiction.
+- Navigates to the AllBooks page when clicking the "Browse Books" button.
 
 ### **Unit Test for AddBook Component**
 #### **Test File:** `tests/unit/AddBook.test.jsx`
 
 Tests Implemented:
--Renders the Add Book form with all required fields.
--Updates form input fields on change.
--Ensures correct data types are captured (especially for numeric fields like price).
--Validates form submission flow (mocking API call).
--Displays success and error messages based on the submission result.
+- Renders the Add Book form with all required fields.
+- Updates form input fields on change.
+- Ensures correct data types are captured (especially for numeric fields like price).
+- Validates form submission flow (mocking API call).
+- Displays success and error messages based on the submission result.
 ---
 
 ## **3️. Cypress End-to-End (E2E) Tests**
@@ -93,19 +93,19 @@ Tests Implemented:
 **Test File:** `cypress/e2e/Home.cy.js`
 
 #### **Tests Implemented:**
--Renders the home page hero section correctly.
--Navigates to the AllBooks page when "Browse Books" button is clicked.
--Displays featured categories such as Fiction, Non-Fiction, and Science Fiction.
+- Renders the home page hero section correctly.
+- Navigates to the AllBooks page when "Browse Books" button is clicked.
+- Displays featured categories such as Fiction, Non-Fiction, and Science Fiction.
 
 ### **Cypress Test for AddBook Page**
 **Test File:** `cypress/e2e/AddBook.cy.js`
 
 #### **Tests Implemented:**
-Renders the Add Book form with all required fields.
-Allows user input into all form fields.
-Submits the form and handles successful book addition with a real API call.
-Confirms redirection to the AllBooks page after successful submission.
-Displays an error message if submission fails.
+- Renders the Add Book form with all required fields.
+- Allows user input into all form fields.
+- Submits the form and handles successful book addition with a real API call.
+- Confirms redirection to the AllBooks page after successful submission.
+- Displays an error message if submission fails.
 
 ---
 
