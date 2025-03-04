@@ -14,6 +14,7 @@ During Sprint 2, the frontend team focused on:
 
 ### **Frontend Tasks Completed**
 - Connected **Login and Signup pages** with the backend API.
+- Connected **Home and Add Book pages** with the backend API.
 - Resolved **CORS issues** in backend Go Fiber configuration.
 - Added **Profile** and **Add Book** pagew in the Frontend.
 - Created **unit tests** using **Vitest & React Testing Library**.
