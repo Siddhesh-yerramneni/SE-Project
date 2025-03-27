@@ -52,3 +52,30 @@ func GetReviews(c *fiber.Ctx) error {
 		"reviews":    reviews,
 	})
 }
+
+func DeleteReview(c *fiber.Ctx) error {
+	reviewID := c.Params("id")
+
+	// Check if review exists
+	var review model.Review
+	if err := Database.DBConn.First(&review, reviewID).Error; err != nil {
+		return c.Status(404).JSON(fiber.Map{
+			"statusText": "Not Found",
+			"msg":        "Review not found",
+		})
+	}
+
+	// Delete review
+	if err := Database.DBConn.Delete(&review).Error; err != nil {
+		return c.Status(500).JSON(fiber.Map{
+			"statusText": "Internal Server Error",
+			"msg":        "Error deleting review",
+			"error":      err.Error(),
+		})
+	}
+
+	return c.Status(200).JSON(fiber.Map{
+		"statusText": "OK",
+		"msg":        "Review deleted successfully",
+	})
+}
