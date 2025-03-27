@@ -88,3 +88,50 @@ func DeleteReview(c *fiber.Ctx) error {
 		"msg":        "Review deleted successfully",
 	})
 }
+
+func EditReview(c *fiber.Ctx) error {
+	// Convert ID from string to int
+	id, err := strconv.Atoi(c.Params("id"))
+	if err != nil {
+		return c.Status(400).JSON(fiber.Map{
+			"statusText": "Bad Request",
+			"msg":        "Invalid review ID",
+		})
+	}
+
+	// Check if review exists
+	var review model.Review
+	if err := Database.DBConn.First(&review, id).Error; err != nil {
+		return c.Status(404).JSON(fiber.Map{
+			"statusText": "Not Found",
+			"msg":        "Review not found",
+		})
+	}
+
+	// Parse updated data
+	var updatedReview model.Review
+	if err := c.BodyParser(&updatedReview); err != nil {
+		return c.Status(400).JSON(fiber.Map{
+			"statusText": "Bad Request",
+			"msg":        "Invalid request body",
+		})
+	}
+
+	// Update review text only (optional: ensure UserID & BookID remain unchanged)
+	review.Review = updatedReview.Review
+
+	// Save changes
+	if err := Database.DBConn.Save(&review).Error; err != nil {
+		return c.Status(500).JSON(fiber.Map{
+			"statusText": "Internal Server Error",
+			"msg":        "Error updating review",
+			"error":      err.Error(),
+		})
+	}
+
+	return c.Status(200).JSON(fiber.Map{
+		"statusText": "OK",
+		"msg":        "Review updated successfully!",
+		"review":     review,
+	})
+}
