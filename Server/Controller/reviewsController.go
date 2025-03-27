@@ -34,7 +34,6 @@ func AddReview(c *fiber.Ctx) error {
 	})
 }
 
-// GetReviews fetches all reviews for a specific book
 func GetReviews(c *fiber.Ctx) error {
 	bookID := c.Params("bookID")
 	var reviews []model.Review
