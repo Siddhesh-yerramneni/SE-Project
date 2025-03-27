@@ -1,6 +1,8 @@
 package controller
 
 import (
+	"strconv"
+
 	"github.com/gofiber/fiber/v2"
 	Database "github.com/siddhesh-yerramneni/SE-Project/Server/Database"
 	model "github.com/siddhesh-yerramneni/SE-Project/Server/Models"
@@ -54,11 +56,18 @@ func GetReviews(c *fiber.Ctx) error {
 }
 
 func DeleteReview(c *fiber.Ctx) error {
-	reviewID := c.Params("id")
+	// Convert ID from string to int
+	id, err := strconv.Atoi(c.Params("id"))
+	if err != nil {
+		return c.Status(400).JSON(fiber.Map{
+			"statusText": "Bad Request",
+			"msg":        "Invalid ID format",
+		})
+	}
 
 	// Check if review exists
 	var review model.Review
-	if err := Database.DBConn.First(&review, reviewID).Error; err != nil {
+	if err := Database.DBConn.First(&review, id).Error; err != nil {
 		return c.Status(404).JSON(fiber.Map{
 			"statusText": "Not Found",
 			"msg":        "Review not found",
