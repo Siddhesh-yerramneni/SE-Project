@@ -8,4 +8,5 @@ import (
 func SetupReviewRoutes(app *fiber.App) {
 	app.Post("/addReview", controller.AddReview)
 	app.Get("/getReviews/:bookID", controller.GetReviews)
+	app.Delete("/deleteReview/:id", controller.DeleteReview) // Delete a review
 }
