@@ -33,3 +33,23 @@ func AddReview(c *fiber.Ctx) error {
 		"review":     review,
 	})
 }
+
+// GetReviews fetches all reviews for a specific book
+func GetReviews(c *fiber.Ctx) error {
+	bookID := c.Params("bookID")
+	var reviews []model.Review
+
+	// Find reviews by book ID
+	if err := Database.DBConn.Where("book_id = ?", bookID).Find(&reviews).Error; err != nil {
+		return c.Status(500).JSON(fiber.Map{
+			"statusText": "Internal Server Error",
+			"msg":        "Error fetching reviews",
+			"error":      err.Error(),
+		})
+	}
+
+	return c.Status(200).JSON(fiber.Map{
+		"statusText": "OK",
+		"reviews":    reviews,
+	})
+}
