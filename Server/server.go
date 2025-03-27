@@ -33,6 +33,7 @@ func main() {
 
 	router.SetupRoutes(app)
 	router.SetupAuthRoutes(app)
+	router.SetupReviewRoutes(app)
 
 	app.Listen(":3000")
 }
