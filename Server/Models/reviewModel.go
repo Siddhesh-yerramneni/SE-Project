@@ -7,6 +7,6 @@ type Review struct {
 	Review string `json:"review" gorm:"not null; size:500"`
 
 	// Foreign key relationships
-	User User `gorm:"foreignKey:UserID"`
-	Book Book `gorm:"foreignKey:BookID"`
+	User User `gorm:"foreignKey:UserID;constraint:OnDelete:CASCADE;"`
+	Book Book `gorm:"foreignKey:BookID;constraint:OnDelete:CASCADE;"`
 }
