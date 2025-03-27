@@ -7,4 +7,5 @@ import (
 
 func SetupReviewRoutes(app *fiber.App) {
 	app.Post("/addReview", controller.AddReview)
+	app.Get("/getReviews/:bookID", controller.GetReviews)
 }
