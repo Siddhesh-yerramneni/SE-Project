@@ -95,11 +95,11 @@ func EditReview(c *fiber.Ctx) error {
 	if err != nil {
 		return c.Status(400).JSON(fiber.Map{
 			"statusText": "Bad Request",
-			"msg":        "Invalid review ID",
+			"msg":        "Invalid ID format",
 		})
 	}
 
-	// Check if review exists
+	// Check if the review exists
 	var review model.Review
 	if err := Database.DBConn.First(&review, id).Error; err != nil {
 		return c.Status(404).JSON(fiber.Map{
@@ -108,8 +108,10 @@ func EditReview(c *fiber.Ctx) error {
 		})
 	}
 
-	// Parse updated data
-	var updatedReview model.Review
+	// Parse the request body
+	var updatedReview struct {
+		Review string `json:"review"`
+	}
 	if err := c.BodyParser(&updatedReview); err != nil {
 		return c.Status(400).JSON(fiber.Map{
 			"statusText": "Bad Request",
@@ -117,7 +119,7 @@ func EditReview(c *fiber.Ctx) error {
 		})
 	}
 
-	// Update review text only (optional: ensure UserID & BookID remain unchanged)
+	// Update the review text
 	review.Review = updatedReview.Review
 
 	// Save changes
