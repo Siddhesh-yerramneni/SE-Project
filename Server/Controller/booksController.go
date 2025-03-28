@@ -132,3 +132,22 @@ func GetFictionBooks(c *fiber.Ctx) error {
 		"books":      books,
 	})
 }
+
+func GetshBooks(c *fiber.Ctx) error {
+	var books []model.Book
+
+	// Query books where category is "Fiction"
+	if err := Database.DBConn.Where("category = ?", "Self-help").Find(&books).Error; err != nil {
+		return c.Status(500).JSON(fiber.Map{
+			"statusText": "Internal Server Error",
+			"msg":        "Error fetching books",
+			"error":      err.Error(),
+		})
+	}
+
+	return c.Status(200).JSON(fiber.Map{
+		"statusText": "OK",
+		"msg":        "Fiction books retrieved successfully!",
+		"books":      books,
+	})
+}
