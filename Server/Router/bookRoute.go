@@ -11,4 +11,6 @@ func SetupRoutes(app *fiber.App) {
 	app.Delete("/deleteBook/:id", controller.DeleteBook)
 	app.Get("/getBook/:id", controller.GetBook)
 	app.Get("/getBooks", controller.GetBooks)
+	app.Get("/getBooks/fiction", controller.GetFictionBooks)
+
 }
