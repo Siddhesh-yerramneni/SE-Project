@@ -151,3 +151,22 @@ func GetshBooks(c *fiber.Ctx) error {
 		"books":      books,
 	})
 }
+
+func GetRomanceBooks(c *fiber.Ctx) error {
+	var books []model.Book
+
+	// Ensure case-insensitive match
+	if err := Database.DBConn.Where("LOWER(category) = ?", "romance").Find(&books).Error; err != nil {
+		return c.Status(500).JSON(fiber.Map{
+			"statusText": "Internal Server Error",
+			"msg":        "Error fetching Self-Help books",
+			"error":      err.Error(),
+		})
+	}
+
+	return c.Status(200).JSON(fiber.Map{
+		"statusText": "OK",
+		"msg":        "Romantic books retrieved successfully!",
+		"books":      books,
+	})
+}
