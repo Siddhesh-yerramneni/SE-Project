@@ -13,5 +13,5 @@ func SetupRoutes(app *fiber.App) {
 	app.Get("/getBooks", controller.GetBooks)
 	app.Get("/getBooks/fiction", controller.GetFictionBooks)
 	app.Get("/getBooks/selfhelp", controller.GetshBooks)
-
+	app.Get("/getBooks/romance", controller.GetRomanceBooks)
 }
