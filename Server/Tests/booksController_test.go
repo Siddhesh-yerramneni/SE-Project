@@ -123,3 +123,67 @@ func TestDeleteBook(t *testing.T) {
 	assert.Contains(t, string(bodyBytes), "Book deleted successfully")
 }
 
+func TestGetBook(t *testing.T) {
+	db := setupTestDB()
+	app := fiber.New()
+
+	// Create a mock book
+	book := model.Book{Bookname: "Go Programming", Author: "John Doe", Description: "A book on Go", Price: 29.99, Category: "Programming"}
+	db.Create(&book)
+
+	// Test the GetBook function
+	app.Get("/getbook/:id", func(c *fiber.Ctx) error {
+		id := c.Params("id")
+		var book model.Book
+		if err := db.First(&book, id).Error; err != nil {
+			return c.Status(404).JSON(fiber.Map{"status": "error", "message": "Book not found"})
+		}
+		return c.Status(200).JSON(fiber.Map{"status": "success", "book": book})
+	})
+
+	// Correct conversion of uint to string using strconv.FormatUint
+	req := httptest.NewRequest("GET", "/getbook/"+strconv.FormatUint(uint64(book.ID), 10), nil)
+	resp, _ := app.Test(req)
+
+	// Read the response body
+	bodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		t.Fatalf("failed to read response body: %v", err)
+	}
+
+	// Assert the response
+	assert.Equal(t, 200, resp.StatusCode)
+	assert.Contains(t, string(bodyBytes), "Go Programming")
+}
+
+// Test case for GetBooks function
+func TestGetBooks(t *testing.T) {
+	db := setupTestDB()
+	app := fiber.New()
+
+	// Create a mock book
+	book := model.Book{Bookname: "Go Programming", Author: "John Doe", Description: "A book on Go", Price: 29.99, Category: "Programming"}
+	db.Create(&book)
+
+	// Test the GetBooks function
+	app.Get("/getbooks", func(c *fiber.Ctx) error {
+		var books []model.Book
+		if err := db.Find(&books).Error; err != nil {
+			return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Database error"})
+		}
+		return c.Status(200).JSON(fiber.Map{"status": "success", "books": books})
+	})
+
+	req := httptest.NewRequest("GET", "/getbooks", nil)
+	resp, _ := app.Test(req)
+
+	// Read the response body
+	bodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		t.Fatalf("failed to read response body: %v", err)
+	}
+
+	// Assert the response
+	assert.Equal(t, 200, resp.StatusCode)
+	assert.Contains(t, string(bodyBytes), "Go Programming")
+}
