@@ -33,14 +33,14 @@ func AddBook(c *fiber.Ctx) error {
 	if result.Error != nil {
 		return c.Status(500).JSON(fiber.Map{
 			"statusText": "Internal Server Error",
-			"msg":        "Error creating user",
+			"msg":        "Error adding book",
 			"error":      result.Error.Error(), //  Return the actual database error
 		})
 	}
 
 	return c.Status(201).JSON(fiber.Map{
 		"statusText": "OK",
-		"msg":        "book registered successfully!",
+		"msg":        "User registered successfully!",
 		"book": fiber.Map{
 			"id":       book.ID,
 			"bookname": book.Bookname,
