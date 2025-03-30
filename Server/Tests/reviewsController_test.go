@@ -2,15 +2,16 @@ package controller
 
 import (
 	"bytes"
+	"io/ioutil" // For older Go versions, otherwise use "io"
+	"net/http/httptest"
+	"strconv"
 	"testing"
+
 	"github.com/gofiber/fiber/v2"
+	model "github.com/siddhesh-yerramneni/SE-Project/Server/Models" // Import as 'model'
 	"github.com/stretchr/testify/assert"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
-	"github.com/siddhesh-yerramneni/SE-Project/Server/Models" // Import as 'model'
-	"net/http/httptest"
-	"io/ioutil" // For older Go versions, otherwise use "io"
-	"strconv"
 )
 
 // Setup function to initialize an in-memory SQLite database

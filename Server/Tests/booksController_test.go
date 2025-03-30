@@ -2,15 +2,16 @@ package tests
 
 import (
 	"bytes"
-	"testing"
-	"github.com/gofiber/fiber/v2"
-	"github.com/stretchr/testify/assert"
-	"github.com/siddhesh-yerramneni/SE-Project/Server/Models"
+	"io/ioutil" // Import ioutil to read response body
 	"net/http/httptest"
+	"strconv"
+	"testing"
+
+	"github.com/gofiber/fiber/v2"
+	model "github.com/siddhesh-yerramneni/SE-Project/Server/Models"
+	"github.com/stretchr/testify/assert"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
-	"io/ioutil" // Import ioutil to read response body
-	"strconv"
 )
 
 // Setup function to initialize an in-memory SQLite database
@@ -88,7 +89,6 @@ func TestAddBook(t *testing.T) {
 	assert.Contains(t, string(bodyBytes), `"status":"success"`)
 	assert.Contains(t, string(bodyBytes), `"bookname":"Go Programming"`)
 }
-
 
 // Test case for DeleteBook function
 func TestDeleteBook(t *testing.T) {
