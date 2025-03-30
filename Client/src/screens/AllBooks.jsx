@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 const AllBooks = () => {
   const [books, setBooks] = useState([]);
@@ -36,9 +37,11 @@ const AllBooks = () => {
                   {book.bookname.charAt(0)}
                 </span>
               </div>
-              <h3 className="text-xl font-bold mt-4 text-gray-800">
-                {book.bookname}
-              </h3>
+              <Link to={`/viewBook/${book.id}`}>
+  <h3 className="text-xl font-bold mt-4 text-gray-800 hover:underline">
+    {book.bookname}
+  </h3>
+</Link>
               <p className="text-gray-600">Author: {book.author}</p>
               <p className="text-gray-500 mt-2">{book.description}</p>
               <p className="text-green-600 mt-2 font-semibold">
