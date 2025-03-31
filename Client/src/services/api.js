@@ -22,6 +22,16 @@ export const login = async (data) => {
   }
 };
 
+// All Books API call
+export const fetchAllBooks = async () => {
+  try {
+    const response = await axios.get(`${API_URL}/getBooks`);
+    return response.data;
+  } catch (error) {
+    throw error.response ? error.response.data : { msg: "Failed to fetch books" };
+  }
+};
+
 // Add Book API call
 export const addBook = async (data) => {
   try {

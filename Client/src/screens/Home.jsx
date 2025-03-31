@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import CategoryCard from "../components/CategoryCard";
 
 const Home = () => {
   const [homeBooks, setHomeBooks] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Uncomment the code below when you're ready to fetch data
   // useEffect(() => {
   //   const fetchHomeBooks = async () => {
   //     try {
@@ -22,112 +24,139 @@ const Home = () => {
   // }, []);
 
   return (
-    <div className='shadow'>
-      {/* Hero Section */}
-      <section className="bg-slate-100 py-16  bg-[url(/src/assets/shelfwise.jpg)] " >
-        <div className="container mx-auto text-center">
-          <h1 className="text-4xl sm:text-5xl font-bold text-slate-700">
+    <>
+      <div
+        className="fixed top-0 left-0 w-full h-full bg-contain bg-center"
+        style={{
+          backgroundImage: "url('/assets/shelfwise.jpg')",
+          filter: "brightness(0.5)",
+          zIndex: -1,
+        }}
+      />
+
+      {/* Scrolling Content */}
+      <div className="relative z-10">
+        {/* Hero Section */}
+        <section className="h-[500px] flex flex-col items-center justify-center text-center px-4">
+          <h1 className="text-4xl sm:text-5xl font-bold text-white">
             Welcome to ShelfWise
           </h1>
-          <p className="text-lg sm:text-xl text-slate-700 mt-4">
+          <p className="text-lg sm:text-xl text-white mt-4">
             Discover your next great read today!
           </p>
-          <Link to="/allBooks" className="mt-8 inline-block bg-orange-600 text-white font-semibold py-3 px-8 rounded-full hover:bg-orange-600 transition duration-300">
+          <a
+            href="/allBooks"
+            className="mt-8 inline-block bg-orange-600 text-white font-semibold py-3 px-8 rounded-full hover:bg-orange-700 transition duration-300"
+          >
             Browse Books
-          </Link>
-        </div>
-      </section>
+          </a>
+        </section>
+        {/* End Hero Section */}
 
-      {/* Featured Categories Section */}
-      <section className="py-16 bg-slate-100">
-        <div className="p-6 container bg-slate-700 mx-auto">
-          <h2 className="text-2xl sm:text-3xl font-bold text-center text-slate-100">
-            <span className='text-orange-600'>Explore</span>
-            <span className='mx-2'>Categories</span>
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
-            <div className= " bg-[url(/src/assets/fiction.jpg)]  bg-slate-100 p-8 text-center shadow-sm ">
-              <h3 className="text-xl font-extrabold text-white">Fiction</h3>
-              <p className="text-white font-semibold mt-4">Immerse yourself in stories that captivate and inspire.</p>
-              <Link to="/category/fiction" className="text-orange-600 hover:underline font-bold mt-4 inline-block">
-                Browse Fiction
-              </Link>
-            </div>
-            <div className="bg-[url(/src/assets/non-fiction.jpg)]   bg-slate-100 p-8 text-center shadow-sm">
-              <h3 className="text-xl font-extrabold text-white
-              ">Non-Fiction</h3>
-              <p className="text-white font-semibold mt-4">Explore books that educate and inform.</p>
-              <Link to="/category/non-fiction" className="text-orange-600 hover:underline font-bold mt-4 inline-block">
-                Browse Non-Fiction
-              </Link>
-            </div>
-            <div className="bg-[url(/src/assets/science-fiction.jpg)]  bg-slate-100 p-8 text-center shadow-sm">
-              <h3 className="text-xl font-extrabold text-white
-              ">Science Fiction</h3>
-              <p className="text-white font-semibold mt-4">Dive into futuristic worlds and advanced technologies.</p>
-              <Link to="/category/science-fiction" className="text-orange-600 font-bold hover:underline font-semibold mt-4 inline-block">
-                Browse Science Fiction
-              </Link>
+        {/* Explore Categories Section */}
+        <section className="py-16 bg-slate-400">
+          <div className="container mx-auto px-4">
+            <h2 className="text-2xl sm:text-3xl font-bold text-center text-slate-700">
+              <span className="text-orange-600">Explore</span>
+              <span className="mx-2">Categories</span>
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
+              {/* Fiction Card */}
+              <CategoryCard
+                imageUrl="/assets/fiction.jpg"
+                title="Science Fiction"
+                description="Dive into futuristic worlds and advanced technologies."
+                linkUrl="/category/science-fiction"
+              />
+              {/* Non-Fiction Card */}
+              <CategoryCard
+                imageUrl="/assets/non-fiction.jpg"
+                title="Non-Fiction"
+                description="Explore books that educate and inform."
+                linkUrl="/category/non-fiction"
+              />
+              {/* Science Fiction Card */}
+              <CategoryCard
+                imageUrl="/assets/science-fiction.jpg"
+                title="Science-Fiction"
+                description=" Dive into futuristic worlds and advanced technologies."
+                linkUrl="/category/science-fiction"
+              />
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+        {/* End Explore Categories Section */}
 
-      {/* Popular Books Section */}
-      <section className="py-16 bg-slate-100">
-        <div className='container mx-auto'>
-          <h2 className="text-2xl sm:text-3xl font-bold text-center text-slate-700">
-            Popular Books
-          </h2>
-          {isLoading ? (
-            <div className="flex justify-center items-center mt-8">
-              <p>Loading...</p>
-            </div>
-          ) : error ? (
-            <p className="text-center text-red-500 mt-8">{error}</p>
-          ) : (
-            <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mt-8'>
-              {homeBooks.length > 0 ? (
-                homeBooks.map((book) => (
-                  <div key={book._id} className='bg-slate-100 shadow-lg rounded-lg p-6 text-center'>
-                    <img src={book.bookImage} className='w-50 h-50 object-cover rounded-lg mb-4' alt={book.bookname} />
-                    <h3 className='text-xl font-semibold text-slate-700'>
-                      {book.bookname}
-                    </h3>
-                    <p className="text-orange-600 font-semibold mt-2">
-                      Author: {book.author}
-                    </p>
-                    <Link
-                      to={`/viewBook/${book._id}`}
-                      className="mt-4 inline-block bg-orange-600 text-white font-semibold py-2 px-4 rounded hover:bg-orange-600 transition duration-300"
+        {/* Popular Books Section */}
+        <section className="py-16 bg-slate-100">
+          <div className="container mx-auto px-4">
+            <h2 className="text-2xl sm:text-3xl font-bold text-center text-slate-700">
+              Popular Books
+            </h2>
+            {isLoading ? (
+              <div className="flex justify-center items-center mt-8">
+                <p>Loading...</p>
+              </div>
+            ) : error ? (
+              <p className="text-center text-red-500 mt-8">{error}</p>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mt-8">
+                {homeBooks.length > 0 ? (
+                  homeBooks.map((book) => (
+                    <div
+                      key={book._id}
+                      className="bg-slate-100 shadow-lg rounded-lg p-6 text-center"
                     >
-                      View Details
-                    </Link>
-                  </div>
-                ))
-              ) : (
-                <p className="text-center text-gray-500">No books available.</p>
-              )}
-            </div>
-          )}
-        </div>
-      </section>
+                      <img
+                        src={book.bookImage}
+                        className="w-50 h-50 object-cover rounded-lg mb-4"
+                        alt={book.bookname}
+                      />
+                      <h3 className="text-xl font-semibold text-slate-700">
+                        {book.bookname}
+                      </h3>
+                      <p className="text-orange-600 font-semibold mt-2">
+                        Author: {book.author}
+                      </p>
+                      <Link
+                        to={`/viewBook/${book._id}`}
+                        className="mt-4 inline-block bg-orange-600 text-white font-semibold py-2 px-4 rounded hover:bg-orange-600 transition duration-300"
+                      >
+                        View Details
+                      </Link>
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-center text-gray-500">
+                    No books available.
+                  </p>
+                )}
+              </div>
+            )}
+          </div>
+        </section>
+        {/* End Popular Books Section */}
 
-      {/* Call to Action Section */}
-      <section className="py-16 bg-slate-700">
-        <div className="container mx-auto text-center">
-          <h2 className="text-2xl sm:text-3xl font-bold text-slate-100">
-            Ready to start your reading journey?
-          </h2>
-          <p className="text-lg sm:text-xl text-slate-100 mt-4">
-            Join our community of book lovers today!
-          </p>
-          <Link to="/signup" className="mt-8 inline-block bg-orange-600 text-white font-semibold py-3 px-8 rounded-full hover:bg-orange-600 transition duration-300">
-            Sign Up Now
-          </Link>
-        </div>
-      </section>
-    </div>
+        {/* Call to Action Section */}
+        <section className="py-16 bg-slate-700">
+          <div className="container mx-auto px-4 text-center">
+            <h2 className="text-2xl sm:text-3xl font-bold text-slate-100">
+              Ready to start your reading journey?
+            </h2>
+            <p className="text-lg sm:text-xl text-slate-100 mt-4">
+              Join our community of book lovers today!
+            </p>
+            <Link
+              to="/signup"
+              className="mt-8 inline-block bg-orange-600 text-white font-semibold py-3 px-8 rounded-full hover:bg-orange-600 transition duration-300"
+            >
+              Sign Up Now
+            </Link>
+          </div>
+        </section>
+        {/* End Call to Action Section */}
+      </div>
+    </>
   );
 };
 
