@@ -1,11 +1,15 @@
 import React, { useState } from "react";
 import { login } from "../services/api";
 import { useNavigate, Link } from "react-router-dom";
+import { setUser } from "../store";
+import { useDispatch } from "react-redux";
 
 const Login = () => {
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({ username: "", password: "" });
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -14,18 +18,18 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     setSuccessMessage("");
     setErrorMessage("");
+    setLoading(true);
 
     try {
       const res = await login(formData);
       if (res && res.user) {
+        dispatch(setUser(res.user));
         localStorage.setItem("currentUser", JSON.stringify(res.user));
         setSuccessMessage(res.msg || "Login successful");
         setTimeout(() => {
           navigate("/");
-          window.location.reload(); // Optional: reloads to update header immediately
         }, 2000);
       } else {
         setErrorMessage("Invalid response from server");
@@ -33,6 +37,8 @@ const Login = () => {
     } catch (error) {
       console.error("Login Error:", error);
       setErrorMessage(error.msg || "Login failed");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -86,9 +92,10 @@ const Login = () => {
           {/* Submit Button */}
           <button
             type="submit"
-            className="w-full bg-orange-500 text-white font-semibold py-2 rounded-md shadow-md hover:bg-orange-600 transition duration-300"
+            disabled={loading}
+            className="w-full bg-orange-500 text-white font-semibold py-2 rounded-md shadow-md hover:bg-orange-600 transition duration-300 disabled:opacity-50"
           >
-            Login
+            {loading ? "Logging in..." : "Login"}
           </button>
         </form>
 

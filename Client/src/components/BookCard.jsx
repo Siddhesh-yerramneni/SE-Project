@@ -1,8 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
 const BookCard = ({ book }) => {
   return (
+    <Link to={`/viewBook/${book.id}`}>
     <div className="bg-white p-6 rounded-lg shadow-md">
       <div className="h-40 bg-orange-100 flex items-center justify-center rounded">
         <span className="text-2xl font-bold text-orange-500">
@@ -15,6 +17,7 @@ const BookCard = ({ book }) => {
       <p className="text-green-600 mt-2 font-semibold">₹{book.price}</p>
       <p className="text-orange-500 mt-1">{book.category}</p>
     </div>
+    </Link>
   );
 };
 

@@ -2,8 +2,9 @@ import axios from "axios";
 
 const API_URL = "http://127.0.0.1:3000";
 
-// ------------------------ Auth APIs ------------------------
+// ------------------------ Auth APIs ------------------------ //
 
+// User registration / Signp API
 export const signup = async (data) => {
   try {
     const response = await axios.post(`${API_URL}/signup`, data);
@@ -13,6 +14,7 @@ export const signup = async (data) => {
   }
 };
 
+// User login API
 export const login = async (data) => {
   try {
     const response = await axios.post(`${API_URL}/login`, data);
@@ -22,7 +24,9 @@ export const login = async (data) => {
   }
 };
 
-// ------------------------ Book APIs ------------------------
+// ------------------------ Book APIs ------------------------ //
+
+// Get all Books API
 export const fetchAllBooks = async () => {
   try {
     const response = await axios.get(`${API_URL}/getBooks`);
@@ -31,6 +35,8 @@ export const fetchAllBooks = async () => {
     throw error.response ? error.response.data : { msg: "Failed to fetch books" };
   }
 };
+
+// Add new book API
 export const addBook = async (data) => {
   try {
     const response = await axios.post(`${API_URL}/addBook`, data);
@@ -40,15 +46,7 @@ export const addBook = async (data) => {
   }
 };
 
-export const getBooks = async () => {
-  try {
-    const response = await axios.get(`${API_URL}/getBooks`);
-    return response.data;
-  } catch (error) {
-    throw error.response ? error.response.data : { msg: "Failed to fetch books." };
-  }
-};
-
+// Fetch an individual book based on Book ID
 export const getBook = async (id) => {
   try {
     const response = await axios.get(`${API_URL}/getBook/${id}`);
@@ -58,8 +56,9 @@ export const getBook = async (id) => {
   }
 };
 
-// ------------------------ Review APIs ------------------------
+// ------------------------ Review APIs ------------------------ //
 
+// Fetch all reviews for a give book ID
 export const getReviews = async (bookId) => {
   try {
     const response = await axios.get(`${API_URL}/getReviews/${bookId}`);
@@ -69,6 +68,7 @@ export const getReviews = async (bookId) => {
   }
 };
 
+// Add a new review for the given Book
 export const addReview = async (data) => {
   try {
     const response = await axios.post(`${API_URL}/addReview`, data);
@@ -78,6 +78,7 @@ export const addReview = async (data) => {
   }
 };
 
+// Edit existing review for the Book
 export const editReview = async (id, data) => {
   try {
     const response = await axios.put(`${API_URL}/editReview/${id}`, data);
@@ -98,7 +99,7 @@ export const deleteReview = async (id) => {
   }
 };
 
-// ------------------------ Home Page API ------------------------
+// ------------------------ Home Page API ------------------------ //
 
 export const getHomePage = async () => {
   try {

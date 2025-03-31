@@ -35,13 +35,16 @@ func AddReview(c *fiber.Ctx) error {
 		"review":     review,
 	})
 }
-
 func GetReviews(c *fiber.Ctx) error {
 	bookID := c.Params("bookID")
 	var reviews []model.Review
 
-	// Find reviews by book ID
-	if err := Database.DBConn.Where("book_id = ?", bookID).Find(&reviews).Error; err != nil {
+	// Use Preload to fetch associated user and book details
+	if err := Database.DBConn.
+		Preload("User").
+		Preload("Book").
+		Where("book_id = ?", bookID).
+		Find(&reviews).Error; err != nil {
 		return c.Status(500).JSON(fiber.Map{
 			"statusText": "Internal Server Error",
 			"msg":        "Error fetching reviews",
@@ -54,7 +57,6 @@ func GetReviews(c *fiber.Ctx) error {
 		"reviews":    reviews,
 	})
 }
-
 func DeleteReview(c *fiber.Ctx) error {
 	// Convert ID from string to int
 	id, err := strconv.Atoi(c.Params("id"))
