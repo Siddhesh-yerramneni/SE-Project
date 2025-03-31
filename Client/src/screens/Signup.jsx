@@ -3,7 +3,7 @@ import { signup } from "../services/api";
 import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
-  const [formData, setFormData] = useState({ username: "", email: "", password: "" });
+  const [formData, setFormData] = useState({ username: "", name:"", email: "", password: "" });
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
@@ -47,7 +47,7 @@ const Signup = () => {
               htmlFor="email"
               className="block text-gray-700 font-semibold mb-2"
             >
-              Email
+              Email*
             </label>
             <input
               type="email"
@@ -67,7 +67,7 @@ const Signup = () => {
               htmlFor="username"
               className="block text-gray-700 font-semibold mb-2"
             >
-              Username
+              Username*
             </label>
             <input
               type="text"
@@ -80,6 +80,24 @@ const Signup = () => {
               className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-400 focus:border-orange-400"
             />
           </div>
+           {/* Full name Field */}
+           <div>
+            <label
+              htmlFor="name"
+              className="block text-gray-700 font-semibold mb-2"
+            >
+              Full Name
+            </label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              placeholder="Enter your Full name"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-400 focus:border-orange-400"
+            />
+          </div>
 
           {/* Password Field */}
           <div>
@@ -87,7 +105,7 @@ const Signup = () => {
               htmlFor="password"
               className="block text-gray-700 font-semibold mb-2"
             >
-              Password
+              Password*
             </label>
             <input
               type="password"
