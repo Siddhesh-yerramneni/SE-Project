@@ -68,6 +68,7 @@ func Signup(c *fiber.Ctx) error {
 			"id":       user.ID,
 			"username": user.Username,
 			"email":    user.Email,
+			"name":     user.Name,
 		},
 	})
 }
@@ -109,6 +110,5 @@ func Login(c *fiber.Ctx) error {
 			"name":     user.Name,
 		},
 	})
-	
-	
+
 }
