@@ -11,7 +11,7 @@ const CategoryCard = ({ imageUrl, title, description, linkUrl }) => {
 
       <div
         className="absolute inset-0 flex flex-col items-center justify-center p-4 z-10"
-        style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
+        style={{ backgroundColor: "rgba(0, 0, 0, 0.6)" }}
       >
         <h3 className="text-xl font-extrabold text-white">{title}</h3>
         <p className="text-white font-semibold mt-2 text-center">
