@@ -1,21 +1,27 @@
 import React, { useEffect, useState } from "react";
+import BookCard from "../components/BookCard";
+import { fetchAllBooks } from "../services/api";
 
 const AllBooks = () => {
   const [books, setBooks] = useState([]);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchBooks = async () => {
-      try {
-        const res = await fetch("http://127.0.0.1:3000/getBooks");
-        const data = await res.json();
-        setBooks(data.books);
-      } catch (err) {
-        setError("Failed to fetch books.");
-      }
-    };
     fetchBooks();
   }, []);
+
+  const fetchBooks = async () => {
+    try {
+      const data = await fetchAllBooks();
+      setBooks(data.books);
+    } catch (err) {
+      setError(err.msg || "Failed to fetch books.");
+    } finally {
+      setLoading(false);
+    }
+  };
+  
 
   if (error) return <div className="text-center text-red-600 mt-20">{error}</div>;
 
@@ -24,28 +30,14 @@ const AllBooks = () => {
       <h2 className="text-4xl font-bold text-center mb-12 text-gray-800">
         All Books
       </h2>
-
-      {books.length === 0 ? (
+      {loading ? (
+        <p className="text-center text-gray-500">Loading...</p>
+      ) : books.length === 0 ? (
         <p className="text-center text-gray-500">No books available.</p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {books.map((book) => (
-            <div key={book.id} className="bg-white p-6 rounded-lg shadow-md">
-              <div className="h-40 bg-orange-100 flex items-center justify-center rounded">
-                <span className="text-2xl font-bold text-orange-500">
-                  {book.bookname.charAt(0)}
-                </span>
-              </div>
-              <h3 className="text-xl font-bold mt-4 text-gray-800">
-                {book.bookname}
-              </h3>
-              <p className="text-gray-600">Author: {book.author}</p>
-              <p className="text-gray-500 mt-2">{book.description}</p>
-              <p className="text-green-600 mt-2 font-semibold">
-                ₹{book.price}
-              </p>
-              <p className="text-orange-500 mt-1">{book.category}</p>
-            </div>
+            <BookCard key={book.id} book={book} />
           ))}
         </div>
       )}
