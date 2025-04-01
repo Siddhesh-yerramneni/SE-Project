@@ -37,16 +37,9 @@ const AllBooks = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-r from-slate-100 to-slate-300 p-14">
-<<<<<<< HEAD
-      <h2 className="text-4xl font-bold text-center mb-12 text-gray-800">
-        All Books
-      </h2>
-
-=======
 <h2 className="text-4xl font-bold text-center mb-12 text-gray-800">
   {category!==undefined? `${category} Books` : "All Books"}
 </h2>
->>>>>>> 81de171505b521ee58732511221d4be04a1dab6e
       {loading ? (
         <p className="text-center text-gray-500">Loading...</p>
       ) : books.length === 0 ? (
