@@ -39,6 +39,122 @@ This sprint introduced significant improvements in the front end, focusing on en
 ## Conclusion
 The sprint has paved the way for a more scalable and maintainable front end, with robust testing and a cleaner code structure. The planned enhancements will further enrich user interactions and streamline content management in future releases.
 
+# Frontend Unit Tests Documentation – Review Feature
+
+##  `ReviewForm.test.jsx`
+
+### 1. **Renders form in add mode**
+- **Purpose**: Ensure the component displays textarea and submit button for new reviews.
+- **Setup**: Rendered with `existingReview = null`.
+- **Execution**: Render the component.
+- **Assertions**:
+  - Textarea with placeholder `Write your review...` should be present.
+  - Button labeled `Submit Review` should exist.
+- **Expected Outcome**: Correct UI for add review mode.
+
+---
+
+### 2. **Submits a new review**
+- **Purpose**: Validate that `addReview()` API is called with correct data.
+- **Setup**: Mock `addReview`, simulate user input and submit.
+- **Execution**: Type a new review and click submit.
+- **Assertions**:
+  - `api.addReview()` is called with correct payload.
+  - `refreshReviews()` is triggered.
+- **Expected Outcome**: API integration and UI callback work properly.
+
+---
+
+### 3. **Renders form in edit mode**
+- **Purpose**: Validate conditional UI for editing a review.
+- **Setup**: Pass `existingReview={{ id: 5, review: "Old Review" }}`.
+- **Execution**: Render the form.
+- **Assertions**:
+  - Textarea should contain "Old Review".
+  - Button text should be `Update Review`.
+- **Expected Outcome**: Displays correctly in edit mode.
+
+---
+
+### 4. **Submits updated review**
+- **Purpose**: Ensure `editReview()` is called with updated data.
+- **Setup**: Mock `editReview`, simulate text change and update click.
+- **Execution**: Change review text and click `Update Review`.
+- **Assertions**:
+  - `api.editReview()` called with updated review.
+  - `refreshReviews()` triggered.
+- **Expected Outcome**: Review is updated and reflected in UI.
+
+---
+
+## `ReviewList.test.jsx`
+
+### 1. **Renders all reviews**
+- **Purpose**: Ensure multiple reviews are rendered for a book.
+- **Setup**: `getReviews` mock returns multiple reviews.
+- **Execution**: Render `ReviewList` with `bookId=1`.
+- **Assertions**:
+  - Text from all mock reviews should be visible.
+- **Expected Outcome**: Full review list is displayed.
+
+---
+
+### 2. **Shows Edit/Delete for current user**
+- **Purpose**: Restrict review actions to the owner.
+- **Setup**: Mock reviews with mixed user_ids.
+- **Execution**: Render with `currentUserId=1`.
+- **Assertions**:
+  - "Edit" and "Delete" appear only for `user_id: 1`.
+- **Expected Outcome**: Proper access control for actions.
+
+---
+
+### 3. **Enters edit mode on Edit click**
+- **Purpose**: Clicking edit activates editable state.
+- **Execution**: Click "Edit" on user’s review.
+- **Assertions**:
+  - Editable input field is shown.
+  - Label `Editing your review...` appears.
+- **Expected Outcome**: Edit mode is triggered in UI.
+
+---
+
+### 4. **Deletes a review**
+- **Purpose**: Ensure delete button triggers `deleteReview()` call.
+- **Setup**: Mock API and confirm delete call.
+- **Execution**: Click "Delete" on review.
+- **Assertions**:
+  - `api.deleteReview(id)` is called.
+- **Expected Outcome**: Review is removed and list updates.
+
+---
+
+##  `ViewBook.test.jsx`
+
+### 1. **Shows loading text initially**
+- **Purpose**: Display loading message during data fetch.
+- **Execution**: Render component without data.
+- **Assertions**:
+  - "Loading book..." is shown initially.
+- **Expected Outcome**: UI handles loading state.
+
+---
+
+### 2. **Renders book details and review section**
+- **Purpose**: Ensure book data and `ReviewList` are rendered correctly.
+- **Setup**: Mock book API response and mock `ReviewList` component.
+- **Execution**: Render page, wait for API resolution.
+- **Assertions**:
+  - Book title, author, price, and category are visible.
+  - `ReviewList` is rendered.
+- **Expected Outcome**: Complete book view page loads with review section.
+
+---
+
+📘 **Note**: All tests are written using **Vitest + React Testing Library**, and APIs are mocked from the shared `api.js` service.
+
+
+
 
 # Backend
 
