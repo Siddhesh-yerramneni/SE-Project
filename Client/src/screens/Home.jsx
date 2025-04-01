@@ -66,39 +66,39 @@ const Home = () => {
                 imageUrl="/assets/science-fiction.png"
                 title="Science Fiction"
                 description="Explore futuristic realms and interstellar adventures beyond the stars."
-                linkUrl="/category/science-fiction"
+                linkUrl="/allBooks"
               />
               {/* Non-Fiction Card */}
               <CategoryCard
                 imageUrl="/assets/non-fiction.png"
                 title="Non-Fiction"
                 description="Dive into compelling narratives that reveal truths and insightful real-world stories."
-                linkUrl="/category/non-fiction"
+                linkUrl="/allBooks"
               />
               {/* Science Fiction Card */}
               <CategoryCard
                 imageUrl="/assets/self-help.png"
                 title="Self-Help"
                 description="Ignite personal transformation and unlock your potential with every page."
-                linkUrl="/category/science-fiction"
+                linkUrl="/allBooks"
               />
               <CategoryCard
                 imageUrl="/assets/romance.png"
                 title="Romance"
                 description=" Experience the passion and emotion of love’s intricate dance."
-                linkUrl="/category/science-fiction"
+                // linkUrl="/allBooks"
               />
               <CategoryCard
                 imageUrl="/assets/mystery.png"
                 title="Mystery"
                 description="Unravel secrets and unexpected twists in a world of suspense."
-                linkUrl="/category/science-fiction"
+                linkUrl="/allBooks"
               />
               <CategoryCard
                 imageUrl="/assets/fantasy.png"
                 title="Fantasy"
                 description="Step into magical lands where myths and legends come alive."
-                linkUrl="/category/science-fiction"
+                linkUrl="/allBooks"
               />
             </div>
           </div>

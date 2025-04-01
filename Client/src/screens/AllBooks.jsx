@@ -1,35 +1,43 @@
 import React, { useEffect, useState } from "react";
 import BookCard from "../components/BookCard";
 import { fetchAllBooks } from "../services/api";
+import { useParams } from "react-router-dom";
 
 const AllBooks = () => {
   const [books, setBooks] = useState([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
+  const { category } = useParams();
 
+
+  console.log("category=>", category)
   useEffect(() => {
     fetchBooks();
-  }, []);
+  }, [category]);
 
   const fetchBooks = async () => {
     try {
       const data = await fetchAllBooks();
-      setBooks(data.books);
+      let allBooks = data.books;
+      if (category) {
+        allBooks = allBooks.filter(book => book.category === category);
+      }
+      
+      setBooks(allBooks);
     } catch (err) {
       setError(err.msg || "Failed to fetch books.");
     } finally {
       setLoading(false);
     }
   };
-  
 
   if (error) return <div className="text-center text-red-600 mt-20">{error}</div>;
 
   return (
     <div className="min-h-screen bg-gradient-to-r from-slate-100 to-slate-300 p-14">
-      <h2 className="text-4xl font-bold text-center mb-12 text-gray-800">
-        All Books
-      </h2>
+<h2 className="text-4xl font-bold text-center mb-12 text-gray-800">
+  {category!==undefined? `${category} Books` : "All Books"}
+</h2>
       {loading ? (
         <p className="text-center text-gray-500">Loading...</p>
       ) : books.length === 0 ? (
