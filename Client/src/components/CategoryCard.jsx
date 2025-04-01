@@ -18,7 +18,7 @@ const CategoryCard = ({ imageUrl, title, description, linkUrl }) => {
           {description}
         </p>
         <Link
-          to={linkUrl}
+          to={`/allBooks/${title}`}
           className="mt-4 inline-block bg-orange-600 text-white font-bold py-2 px-4 rounded hover:bg-orange-700 transition"
         >
           Browse {title}

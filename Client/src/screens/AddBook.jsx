@@ -2,6 +2,16 @@ import React, { useState } from "react";
 import { addBook } from "../services/api";
 import { useNavigate } from "react-router-dom";
 
+const categories = [
+  "other",
+  "Science-Fiction",
+  "Non-Fiction",
+  "Self-help",
+  "Romance",
+  "Mystery",
+  "Fantasy",
+];
+
 const AddBook = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -9,7 +19,7 @@ const AddBook = () => {
     author: "",
     description: "",
     price: "",
-    category: "",
+    category: categories[0],
   });
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -26,7 +36,7 @@ const AddBook = () => {
     try {
       const payload = {
         ...formData,
-        price: parseFloat(formData.price), 
+        price: parseFloat(formData.price),
       };
 
       const res = await addBook(payload);
@@ -34,7 +44,7 @@ const AddBook = () => {
         setSuccessMessage(res.msg || "Book added successfully!");
         setTimeout(() => {
           navigate("/allBooks");
-        }, 3000); 
+        }, 3000);
       } else {
         setErrorMessage("Unexpected server response.");
       }
@@ -51,7 +61,6 @@ const AddBook = () => {
           Add a New Book
         </h2>
         <form onSubmit={handleSubmit} className="space-y-6">
-
           <input
             type="text"
             name="bookname"
@@ -91,15 +100,19 @@ const AddBook = () => {
             className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-orange-400 focus:border-orange-400"
           />
 
-          <input
-            type="text"
+          <select
             name="category"
             value={formData.category}
             onChange={handleChange}
             required
-            placeholder="Category"
             className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-orange-400 focus:border-orange-400"
-          />
+          >
+            {categories.map((cat, index) => (
+              <option key={index} value={cat}>
+                {cat}
+              </option>
+            ))}
+          </select>
 
           <button
             type="submit"

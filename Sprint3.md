@@ -40,6 +40,199 @@ This sprint introduced significant improvements in the front end, focusing on en
 The sprint has paved the way for a more scalable and maintainable front end, with robust testing and a cleaner code structure. The planned enhancements will further enrich user interactions and streamline content management in future releases.
 
 
+# Backend
+
+## `Tests`
+##  `booksController_test.go`
+
+### 1. `TestHomePage`
+
+- **Purpose**:  
+  To verify that the home API route (`"/"`) is correctly configured and responds with expected JSON and HTTP status.
+
+- **Setup**:  
+  Fiber app instance is initialized with a route `/` returning JSON.
+
+- **Execution**:  
+  A GET request is made to `/`.
+
+- **Assertions**:  
+  - Response status should be `200`.
+  - Response body must contain `"Home Page api route"`.
+
+- **Expected Outcome**:  
+  Confirms that the root route works and returns the correct status/message.
+
+---
+
+### 2. `TestAddBook`
+
+- **Purpose**:  
+  To test adding a new book via POST request to `/addbook`.
+
+- **Setup**:  
+  - A mock book JSON is prepared.
+  - An in-memory test DB is initialized via `setupTestDB()`.
+
+- **Execution**:  
+  POST request is sent with JSON payload to `/addbook`. Request handler parses body and creates the book in DB.
+
+- **Assertions**:  
+  - Response status must be `201`.
+  - Response JSON must include `"status":"success"` and the correct `bookname`.
+
+- **Expected Outcome**:  
+  Verifies that the `AddBook` route correctly accepts, parses, stores, and responds with the created book.
+
+---
+
+### 3. `TestDeleteBook`
+
+- **Purpose**:  
+  To test if a book can be deleted successfully via its ID.
+
+- **Setup**:  
+  - A mock book is created and saved in the test DB.
+  - Fiber route `/deletebook/:id` is set up.
+
+- **Execution**:  
+  DELETE request is sent to `/deletebook/<book_id>`.
+
+- **Assertions**:  
+  - Response status must be `200`.
+  - Response body must include `"Book deleted successfully"`.
+
+- **Expected Outcome**:  
+  Ensures that the system can delete a book from the database by ID.
+
+---
+
+### 4. `TestGetBook`
+
+- **Purpose**:  
+  To fetch and return a specific book based on its ID.
+
+- **Setup**:  
+  - A mock book is added to the DB.
+  - Route `/getbook/:id` is defined.
+
+- **Execution**:  
+  GET request is sent to `/getbook/<book_id>`.
+
+- **Assertions**:  
+  - Status code should be `200`.
+  - Response body should contain the book’s name (e.g., `"Go Programming"`).
+
+- **Expected Outcome**:  
+  Confirms that a valid book ID returns the correct book object.
+
+---
+
+### 5. `TestGetBooks`
+
+- **Purpose**:  
+  To test retrieving all books from the database.
+
+- **Setup**:  
+  One mock book is inserted.
+
+- **Execution**:  
+  GET request is sent to `/getbooks`.
+
+- **Assertions**:  
+  - Status code should be `200`.
+  - The response must contain the inserted book details.
+
+- **Expected Outcome**:  
+  Verifies that the endpoint correctly returns a list of books.
+
+---
+
+##  `reviewsController_test.go`
+
+### 1. `TestAddReview`
+
+- **Purpose**:  
+  To test creation of a new review for a book.
+
+- **Setup**:  
+  - In-memory DB initialized with `Review`, `User`, and `Book` tables.
+  - Mock review JSON is prepared.
+
+- **Execution**:  
+  POST request to `/reviews` is sent. The review is parsed and saved.
+
+- **Assertions**:  
+  - Response status must be `201`.
+  - Body includes a success status and saved review.
+
+- **Expected Outcome**:  
+  Ensures that reviews are properly created and stored.
+
+---
+
+### 2. `TestGetReviews`
+
+- **Purpose**:  
+  To fetch all reviews for a particular book.
+
+- **Setup**:  
+  A review is manually inserted into the DB for `book_id=1`.
+
+- **Execution**:  
+  GET request is sent to `/reviews/1`.
+
+- **Assertions**:  
+  - Status code must be `200`.
+  - Returned list should contain the correct review.
+
+- **Expected Outcome**:  
+  Verifies that reviews can be retrieved by `book_id`.
+
+---
+
+### 3. `TestDeleteReview`
+
+- **Purpose**:  
+  To delete a review by its ID.
+
+- **Setup**:  
+  - A review is inserted into the DB.
+  - DELETE route `/reviews/:id` is defined.
+
+- **Execution**:  
+  DELETE request to `/reviews/1` is sent.
+
+- **Assertions**:  
+  - Status code should be `200`.
+  - Response must contain `"Review deleted"`.
+
+- **Expected Outcome**:  
+  Validates that reviews can be successfully deleted.
+
+---
+
+### 4. `TestEditReview`
+
+- **Purpose**:  
+  To update the content of an existing review.
+
+- **Setup**:  
+  - A review is created and stored.
+  - PUT route `/reviews/:id` is defined to update review text.
+
+- **Execution**:  
+  PUT request with updated review JSON is sent.
+
+- **Assertions**:  
+  - Status should be `200`.
+  - Response should include confirmation and updated text.
+
+- **Expected Outcome**:  
+  Ensures that review edits are applied and persisted correctly.
+
+---
+
 # API Doucmentation for the 3rd sprint developed API calls
 
 ## POST /signup
