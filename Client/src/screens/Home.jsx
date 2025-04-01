@@ -28,8 +28,8 @@ const Home = () => {
       <div
         className="fixed top-0 left-0 w-full h-full bg-contain bg-center"
         style={{
-          backgroundImage: "url('/assets/shelfwise.jpg')",
-          filter: "brightness(0.5)",
+          backgroundImage: "url('/assets/hero.png')",
+          filter: "brightness(0.4)",
           zIndex: -1,
         }}
       />
@@ -37,7 +37,7 @@ const Home = () => {
       {/* Scrolling Content */}
       <div className="relative z-10">
         {/* Hero Section */}
-        <section className="h-[500px] flex flex-col items-center justify-center text-center px-4">
+        <section className="h-[550px] flex flex-col items-center justify-center text-center px-4">
           <h1 className="text-4xl sm:text-5xl font-bold text-white">
             Welcome to ShelfWise
           </h1>
@@ -54,33 +54,51 @@ const Home = () => {
         {/* End Hero Section */}
 
         {/* Explore Categories Section */}
-        <section className="py-16 bg-slate-400">
+        <section className="py-16 bg-slate-200">
           <div className="container mx-auto px-4">
             <h2 className="text-2xl sm:text-3xl font-bold text-center text-slate-700">
               <span className="text-orange-600">Explore</span>
               <span className="mx-2">Categories</span>
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
-              {/* Fiction Card */}
+              {/* Science Fiction Card */}
               <CategoryCard
-                imageUrl="/assets/fiction.jpg"
+                imageUrl="/assets/science-fiction.png"
                 title="Science Fiction"
-                description="Dive into futuristic worlds and advanced technologies."
-                linkUrl="/category/science-fiction"
+                description="Explore futuristic realms and interstellar adventures beyond the stars."
+                linkUrl="/allBooks"
               />
               {/* Non-Fiction Card */}
               <CategoryCard
-                imageUrl="/assets/non-fiction.jpg"
+                imageUrl="/assets/non-fiction.png"
                 title="Non-Fiction"
-                description="Explore books that educate and inform."
-                linkUrl="/category/non-fiction"
+                description="Dive into compelling narratives that reveal truths and insightful real-world stories."
+                linkUrl="/allBooks"
               />
               {/* Science Fiction Card */}
               <CategoryCard
-                imageUrl="/assets/science-fiction.jpg"
-                title="Science-Fiction"
-                description=" Dive into futuristic worlds and advanced technologies."
-                linkUrl="/category/science-fiction"
+                imageUrl="/assets/self-help.png"
+                title="Self-Help"
+                description="Ignite personal transformation and unlock your potential with every page."
+                linkUrl="/allBooks"
+              />
+              <CategoryCard
+                imageUrl="/assets/romance.png"
+                title="Romance"
+                description=" Experience the passion and emotion of love’s intricate dance."
+                // linkUrl="/allBooks"
+              />
+              <CategoryCard
+                imageUrl="/assets/mystery.png"
+                title="Mystery"
+                description="Unravel secrets and unexpected twists in a world of suspense."
+                linkUrl="/allBooks"
+              />
+              <CategoryCard
+                imageUrl="/assets/fantasy.png"
+                title="Fantasy"
+                description="Step into magical lands where myths and legends come alive."
+                linkUrl="/allBooks"
               />
             </div>
           </div>

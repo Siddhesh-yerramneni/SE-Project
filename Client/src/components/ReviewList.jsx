@@ -59,9 +59,8 @@ const ReviewList = ({ bookId, currentUserId }) => {
             <li key={review.id} className="border p-3 rounded-md bg-white shadow-sm">
               <p className="text-gray-800">{review.review}</p>
               <div className="text-sm text-gray-500 mt-1">
-                User ID: {review.user_id}
+                Name: {review.user.name? review.user.name:review.user.username}
               </div>
-
               {currentUserId === review.user_id && (
                 <div className="flex gap-4 mt-2">
                   <button

@@ -1,40 +1,39 @@
 import React, { useEffect, useState } from 'react';
 import { addReview, editReview } from '../services/api';
+import { useSelector } from 'react-redux';
 
-const ReviewForm = ({ bookId, userId, existingReview, refreshReviews }) => {
+const ReviewForm = ({ bookId, existingReview, refreshReviews }) => {
   const [reviewText, setReviewText] = useState('');
+  const user = useSelector((state) => state.user);
 
   useEffect(() => {
-    if (existingReview) {
-      setReviewText(existingReview.review);
-    } else {
-      setReviewText('');
-    }
+    setReviewText(existingReview ? existingReview.review : '');
   }, [existingReview]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // Ensure the user is logged in before submitting the review.
+    if (!user) {
+      console.error("User not logged in. Please log in to submit a review.");
+      return;
+    }
 
     const payload = {
       book_id: bookId,
-      user_id: userId,
+      user_id: user.id,
       review: reviewText,
     };
-    console.log("Submitting Review:", payload);
 
     try {
       if (existingReview) {
         await editReview(existingReview.id, { review: reviewText });
-        console.log("✅ Review updated");
       } else {
         await addReview(payload);
-        console.log("✅ Review added");
       }
-
       setReviewText('');
       refreshReviews();
     } catch (err) {
-      console.error("❌ Review submit error:", err.response?.data || err.message);
+      console.error("Review submit error:", err.response?.data || err.message);
     }
   };
 
