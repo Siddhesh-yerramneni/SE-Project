@@ -1,16 +1,9 @@
 import React, { useState } from "react";
 import { addBook } from "../services/api";
 import { useNavigate } from "react-router-dom";
+import { CategoryEnum } from "../utils";
 
-const categories = [
-  "other",
-  "Science-Fiction",
-  "Non-Fiction",
-  "Self-help",
-  "Romance",
-  "Mystery",
-  "Fantasy",
-];
+const categories = Object.values(CategoryEnum);
 
 const AddBook = () => {
   const navigate = useNavigate();
@@ -19,7 +12,7 @@ const AddBook = () => {
     author: "",
     description: "",
     price: "",
-    category: categories[0],
+    category: "",
   });
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -105,9 +98,12 @@ const AddBook = () => {
             value={formData.category}
             onChange={handleChange}
             required
+            placeholder="category"
             className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-orange-400 focus:border-orange-400"
           >
+            <option value="" disabled selected>Select a category</option>
             {categories.map((cat, index) => (
+           
               <option key={index} value={cat}>
                 {cat}
               </option>

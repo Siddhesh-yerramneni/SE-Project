@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import CategoryCard from "../components/CategoryCard";
+import { CategoryEnum } from "../utils";
 
 const Home = () => {
   const [homeBooks, setHomeBooks] = useState([]);
@@ -64,39 +65,39 @@ const Home = () => {
               {/* Science Fiction Card */}
               <CategoryCard
                 imageUrl="/assets/science-fiction.png"
-                title="Science Fiction"
+                title={CategoryEnum.SCIENCE_FICTION}
                 description="Explore futuristic realms and interstellar adventures beyond the stars."
                 linkUrl="/allBooks"
               />
               {/* Non-Fiction Card */}
               <CategoryCard
                 imageUrl="/assets/non-fiction.png"
-                title="Non-Fiction"
+                title={CategoryEnum.NON_FICTION}
                 description="Dive into compelling narratives that reveal truths and insightful real-world stories."
                 linkUrl="/allBooks"
               />
               {/* Science Fiction Card */}
               <CategoryCard
                 imageUrl="/assets/self-help.png"
-                title="Self-Help"
+                title={CategoryEnum.SELF_HELP}
                 description="Ignite personal transformation and unlock your potential with every page."
                 linkUrl="/allBooks"
               />
               <CategoryCard
                 imageUrl="/assets/romance.png"
-                title="Romance"
+                title={CategoryEnum.ROMANCE}
                 description=" Experience the passion and emotion of love’s intricate dance."
                 // linkUrl="/allBooks"
               />
               <CategoryCard
                 imageUrl="/assets/mystery.png"
-                title="Mystery"
+                title={CategoryEnum.MYSTERY}
                 description="Unravel secrets and unexpected twists in a world of suspense."
                 linkUrl="/allBooks"
               />
               <CategoryCard
                 imageUrl="/assets/fantasy.png"
-                title="Fantasy"
+                title={CategoryEnum.FANTASY}
                 description="Step into magical lands where myths and legends come alive."
                 linkUrl="/allBooks"
               />

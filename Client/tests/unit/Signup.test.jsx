@@ -46,9 +46,9 @@ describe("Signup Component (Real API Calls)", () => {
       </MemoryRouter>
     );
 
-    fireEvent.change(screen.getByPlaceholderText("Enter your email"), { target: { value: "test3@example.com" } });
-    fireEvent.change(screen.getByPlaceholderText("Enter your username"), { target: { value: "test3" } });
-    fireEvent.change(screen.getByPlaceholderText("Enter your password"), { target: { value: "test3" } });
+    fireEvent.change(screen.getByPlaceholderText("Enter your email"), { target: { value: "test5@example.com" } });
+    fireEvent.change(screen.getByPlaceholderText("Enter your username"), { target: { value: "test5" } });
+    fireEvent.change(screen.getByPlaceholderText("Enter your password"), { target: { value: "test5" } });
 
     fireEvent.submit(screen.getByRole("button", { name: /sign up/i }));
 
@@ -63,9 +63,9 @@ describe("Signup Component (Real API Calls)", () => {
       </MemoryRouter>
     );
 
-    fireEvent.change(screen.getByPlaceholderText("Enter your email"), { target: { value: "existing@example.com" } });
-    fireEvent.change(screen.getByPlaceholderText("Enter your username"), { target: { value: "existinguser" } });
-    fireEvent.change(screen.getByPlaceholderText("Enter your password"), { target: { value: "password123" } });
+    fireEvent.change(screen.getByPlaceholderText("Enter your email"), { target: { value: "test@example.com" } });
+    fireEvent.change(screen.getByPlaceholderText("Enter your username"), { target: { value: "test" } });
+    fireEvent.change(screen.getByPlaceholderText("Enter your password"), { target: { value: "test" } });
 
     fireEvent.submit(screen.getByRole("button", { name: /sign up/i }));
 
