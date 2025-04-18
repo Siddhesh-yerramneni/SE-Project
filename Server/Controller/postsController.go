@@ -70,3 +70,23 @@ func DeletePost(c *fiber.Ctx) error {
 		"msg":        "Post deleted successfully",
 	})
 }
+
+// GetAllPosts retrieves all posts with their authors
+func GetAllPosts(c *fiber.Ctx) error {
+	var posts []model.Post
+
+	// Fetch posts with associated authors
+	if err := Database.DBConn.Preload("Author").Find(&posts).Error; err != nil {
+		return c.Status(500).JSON(fiber.Map{
+			"statusText": "Internal Server Error",
+			"msg":        "Failed to fetch posts",
+			"error":      err.Error(),
+		})
+	}
+
+	return c.Status(200).JSON(fiber.Map{
+		"statusText": "OK",
+		"msg":        "Posts retrieved successfully",
+		"posts":      posts,
+	})
+}
