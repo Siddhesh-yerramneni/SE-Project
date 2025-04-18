@@ -90,3 +90,32 @@ func GetAllPosts(c *fiber.Ctx) error {
 		"posts":      posts,
 	})
 }
+
+// GetPostsByAuthorID retrieves all posts for a specific author
+func GetPostsByAuthorID(c *fiber.Ctx) error {
+	// Parse author ID from URL param
+	authorID, err := strconv.Atoi(c.Params("authorID"))
+	if err != nil {
+		return c.Status(400).JSON(fiber.Map{
+			"statusText": "Bad Request",
+			"msg":        "Invalid author ID",
+		})
+	}
+
+	var posts []model.Post
+
+	// Fetch posts for given author
+	if err := Database.DBConn.Preload("Author").Where("author_id = ?", authorID).Find(&posts).Error; err != nil {
+		return c.Status(500).JSON(fiber.Map{
+			"statusText": "Internal Server Error",
+			"msg":        "Failed to fetch posts for author",
+			"error":      err.Error(),
+		})
+	}
+
+	return c.Status(200).JSON(fiber.Map{
+		"statusText": "OK",
+		"msg":        "Posts retrieved successfully for author",
+		"posts":      posts,
+	})
+}
