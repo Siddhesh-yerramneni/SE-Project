@@ -119,3 +119,58 @@ func GetPostsByAuthorID(c *fiber.Ctx) error {
 		"posts":      posts,
 	})
 }
+
+func EditPost(c *fiber.Ctx) error {
+	// Parse ID from URL
+	id, err := strconv.Atoi(c.Params("id"))
+	if err != nil {
+		return c.Status(400).JSON(fiber.Map{
+			"statusText": "Bad Request",
+			"msg":        "Invalid post ID",
+		})
+	}
+
+	// Find the post
+	var post model.Post
+	if err := Database.DBConn.First(&post, id).Error; err != nil {
+		return c.Status(404).JSON(fiber.Map{
+			"statusText": "Not Found",
+			"msg":        "Post not found",
+		})
+	}
+
+	// Parse updated fields
+	var updateData struct {
+		Title   string `json:"title"`
+		Content string `json:"content"`
+	}
+	if err := c.BodyParser(&updateData); err != nil {
+		return c.Status(400).JSON(fiber.Map{
+			"statusText": "Bad Request",
+			"msg":        "Invalid request body",
+		})
+	}
+
+	// Update fields if provided
+	if updateData.Title != "" {
+		post.Title = updateData.Title
+	}
+	if updateData.Content != "" {
+		post.Content = updateData.Content
+	}
+
+	// Save the updated post
+	if err := Database.DBConn.Save(&post).Error; err != nil {
+		return c.Status(500).JSON(fiber.Map{
+			"statusText": "Internal Server Error",
+			"msg":        "Failed to update post",
+			"error":      err.Error(),
+		})
+	}
+
+	return c.Status(200).JSON(fiber.Map{
+		"statusText": "OK",
+		"msg":        "Post updated successfully",
+		"post":       post,
+	})
+}

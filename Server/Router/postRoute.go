@@ -10,5 +10,5 @@ func SetupPostRoutes(app *fiber.App) {
 	app.Delete("/deletePost/:id", controller.DeletePost)
 	app.Get("/getPosts", controller.GetAllPosts)
 	app.Get("/getPosts/:authorID", controller.GetPostsByAuthorID)
-	app.Put("/editReview/:id", controller.EditReview)
+	app.Put("/editPost/:id", controller.EditPost)
 }
