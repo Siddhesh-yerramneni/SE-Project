@@ -9,6 +9,6 @@ func SetupPostRoutes(app *fiber.App) {
 	app.Post("/createPost", controller.CreatePost)
 	app.Delete("/deletePost/:id", controller.DeletePost)
 	app.Get("/getPosts", controller.GetAllPosts)
-	app.Get("/getPosts/author/:authorID", controller.GetPostsByAuthorID)
+	app.Get("/getPosts/:authorID", controller.GetPostsByAuthorID)
 
 }
