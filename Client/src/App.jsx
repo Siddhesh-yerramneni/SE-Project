@@ -8,6 +8,9 @@ import Profile from "./screens/Profile.jsx";
 import AllBooks from "./screens/AllBooks.jsx";
 import AddBook from "./screens/AddBook.jsx";
 import ViewBook from "./screens/ViewBook.jsx";
+import CreatePost from './screens/CreatePost';
+import AllPosts from './screens/AllPosts';
+import EditPost from './screens/EditPost';
 
 
 function App() {
@@ -23,6 +26,9 @@ function App() {
         <Route path="/allBooks/:category" element={<AllBooks />} />
         <Route path="/addBook" element={<AddBook />} />
         <Route path="/viewBook/:id" element={<ViewBook />} />
+        <Route path="/createPost" element={<CreatePost />} />
+        <Route path="/allPosts" element={<AllPosts />} />
+        <Route path="/editPost/:id" element={<EditPost />} />
       </Routes>
     </BrowserRouter>
   );

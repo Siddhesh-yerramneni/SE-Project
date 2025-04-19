@@ -47,7 +47,14 @@ export default function Header() {
   <Link to="/addBook">
     <li className="hidden sm:inline text-slate-100 hover:underline">Add Book</li>
   </Link>
+  
 )}
+{currentUser && (
+  <Link to="/createPost" className="text-slate-100 hover:underline">Create Post</Link>
+)}
+<Link to="/allPosts" className="text-slate-100 hover:underline">View Posts</Link>
+
+
 
                 </ul>
             </div>
