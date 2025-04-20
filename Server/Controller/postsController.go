@@ -29,6 +29,7 @@ func CreatePost(c *fiber.Ctx) error {
 		})
 	}
 
+
 	// Return success response
 	return c.Status(201).JSON(fiber.Map{
 		"statusText": "OK",

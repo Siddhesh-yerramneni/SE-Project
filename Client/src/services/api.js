@@ -161,3 +161,30 @@ export const getHomePage = async () => {
       : { msg: "Failed to load home page." };
   }
 };
+
+// ------------------------ Post APIs ------------------------ //
+
+export const createPost = async (data) => {
+  const res = await axios.post(`${API_URL}/createPost`, data);
+  return res.data;
+};
+
+export const getAllPosts = async () => {
+  const res = await axios.get(`${API_URL}/getPosts`);
+  return res.data;
+};
+
+export const getPostsByAuthor = async (authorID) => {
+  const res = await axios.get(`${API_URL}/getPosts/${authorID}`);
+  return res.data;
+};
+
+export const editPost = async (id, data) => {
+  const res = await axios.put(`${API_URL}/editPost/${id}`, data);
+  return res.data;
+};
+
+export const deletePost = async (id) => {
+  const res = await axios.delete(`${API_URL}/deletePost/${id}`);
+  return res.data;
+};
