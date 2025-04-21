@@ -60,3 +60,36 @@ func TestCreatePost(t *testing.T) {
 	assert.Contains(t, string(bodyBytes), `"status":"success"`)
 	assert.Contains(t, string(bodyBytes), `"title":"Go Programming"`)
 }
+
+// Test case for DeletePost function
+func TestDeletePost(t *testing.T) {
+	db := setupTestDB()
+	app := fiber.New()
+
+	// Create a mock post
+	post := model.Post{AuthorID: 1, Title: "Go Programming", Content: "A deep dive into Go."}
+	db.Create(&post)
+
+	// Test the DeletePost function
+	app.Delete("/deletePost/:id", func(c *fiber.Ctx) error {
+		id := c.Params("id")
+		if err := db.Delete(&model.Post{}, id).Error; err != nil {
+			return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Database error"})
+		}
+		return c.Status(200).JSON(fiber.Map{"status": "success", "message": "Post deleted successfully"})
+	})
+
+	// Correct conversion of uint to string using strconv.FormatUint
+	req := httptest.NewRequest("DELETE", "/deletePost/"+strconv.FormatUint(uint64(post.ID), 10), nil)
+	resp, _ := app.Test(req)
+
+	// Read the response body
+	bodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		t.Fatalf("failed to read response body: %v", err)
+	}
+
+	// Assert the response
+	assert.Equal(t, 200, resp.StatusCode)
+	assert.Contains(t, string(bodyBytes), "Post deleted successfully")
+}
