@@ -156,3 +156,69 @@ func TestGetPostsByAuthorID(t *testing.T) {
 	assert.Equal(t, 200, resp.StatusCode)
 	assert.Contains(t, string(bodyBytes), "Go Programming")
 }
+
+func TestEditPost(t *testing.T) {
+	db := setupTestDB()
+	app := fiber.New()
+
+	// Create a mock post
+	post := model.Post{
+		AuthorID: 1,
+		Title:    "Go Programming",
+		Content:  "A deep dive into Go.",
+	}
+	db.Create(&post)
+
+	// Mock updated post data
+	updatedPost := `{"title":"Advanced Go Programming", "content":"A comprehensive guide to Go programming."}`
+
+	// Test the EditPost function
+	app.Put("/editPost/:id", func(c *fiber.Ctx) error {
+		id, err := strconv.Atoi(c.Params("id"))
+		if err != nil {
+			return c.Status(400).JSON(fiber.Map{"status": "Bad Request", "msg": "Invalid post ID"})
+		}
+
+		var post model.Post
+		if err := db.First(&post, id).Error; err != nil {
+			return c.Status(404).JSON(fiber.Map{"status": "Not Found", "msg": "Post not found"})
+		}
+
+		var updatedData struct {
+			Title   string `json:"title"`
+			Content string `json:"content"`
+		}
+		if err := c.BodyParser(&updatedData); err != nil {
+			return c.Status(400).JSON(fiber.Map{"status": "Bad Request", "msg": "Invalid request body"})
+		}
+
+		if updatedData.Title != "" {
+			post.Title = updatedData.Title
+		}
+		if updatedData.Content != "" {
+			post.Content = updatedData.Content
+		}
+
+		if err := db.Save(&post).Error; err != nil {
+			return c.Status(500).JSON(fiber.Map{"status": "Internal Server Error", "msg": "Failed to update post"})
+		}
+
+		return c.Status(200).JSON(fiber.Map{"status": "OK", "msg": "Post updated successfully", "post": post})
+	})
+
+	// Send PUT request to update the post
+	req := httptest.NewRequest("PUT", "/editPost/"+strconv.FormatUint(uint64(post.ID), 10), bytes.NewBufferString(updatedPost))
+	req.Header.Set("Content-Type", "application/json")
+	resp, _ := app.Test(req)
+
+	// Read the response body
+	bodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		t.Fatalf("failed to read response body: %v", err)
+	}
+
+	// Assert the response status and body
+	assert.Equal(t, 200, resp.StatusCode)
+	assert.Contains(t, string(bodyBytes), "Post updated successfully")
+	assert.Contains(t, string(bodyBytes), "Advanced Go Programming")
+}
