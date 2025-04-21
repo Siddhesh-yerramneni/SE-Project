@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { fetchAllBooks } from "../services/api";
 import { useParams } from "react-router-dom";
+import BookCard from "../components/BookCard";
 
 const AllBooks = () => {
   const [books, setBooks] = useState([]);
@@ -10,7 +11,6 @@ const AllBooks = () => {
   const { category } = useParams();
 
 
-  console.log("category=>", category)
   useEffect(() => {
     fetchBooks();
   }, [category]);
@@ -47,40 +47,7 @@ const AllBooks = () => {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {books.map((book) => (
-            <Link
-              key={book.id}
-              to={`/viewBook/${book.id}`}
-              className="block hover:shadow-lg transition duration-300 rounded-md"
-            >
-              <div className="border p-4 rounded-md shadow-md bg-white hover:bg-orange-100 cursor-pointer h-full flex flex-col justify-between">
-                <div>
-                  {/* ✅ Placeholder-style image block */}
-                  <div className="w-full h-48 bg-orange-100 flex items-center justify-center rounded mb-4">
-                    <span className="text-4xl font-bold text-orange-500">
-                      {book.bookname?.charAt(0).toUpperCase() || "B"}
-                    </span>
-                  </div>
-
-                  <h3 className="text-lg font-semibold text-gray-800">
-                    {book.bookname}
-                  </h3>
-
-                  <p className="text-sm text-gray-600 mt-1">
-                    Author: {book.author}
-                  </p>
-
-                  <p className="text-sm text-gray-500 mt-1">
-                    {book.description}
-                  </p>
-
-                  <p className="text-green-700 font-semibold mt-2">
-                    ₹{book.price}
-                  </p>
-
-                  <p className="text-xs text-orange-500 mt-1">{book.category}</p>
-                </div>
-              </div>
-            </Link>
+           <BookCard key={book.id} book={book} />
           ))}
         </div>
       )}

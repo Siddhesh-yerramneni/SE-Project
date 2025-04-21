@@ -1,28 +1,37 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import CategoryCard from "../components/CategoryCard";
+import { fetchAllBooks } from "../services/api";
 import { CategoryEnum } from "../utils";
+import { useLocation } from "react-router-dom";
+import BookCard from "../components/BookCard";
 
 const Home = () => {
-  const [homeBooks, setHomeBooks] = useState([]);
+  const [popularBooks, setPopularBooks] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Uncomment the code below when you're ready to fetch data
-  // useEffect(() => {
-  //   const fetchHomeBooks = async () => {
-  //     try {
-  //       const res = await fetch('/api/book/homeBooks');
-  //       const data = await res.json();
-  //       setHomeBooks(data);
-  //     } catch (error) {
-  //       setError('Failed to fetch books. Please try again later.');
-  //     } finally {
-  //       setIsLoading(false);
-  //     }
-  //   };
-  //   fetchHomeBooks();
-  // }, []);
+  const location = useLocation();
+
+  useEffect(() => {
+    fetchBooks();
+  }, [location]);
+
+  const fetchBooks = async () => {
+    try {
+      const data = await fetchAllBooks();
+      let allBooks = data.books;
+      if (allBooks.length > 4) {
+        setPopularBooks(allBooks.slice(0, 4));
+      } else {
+        setPopularBooks(allBooks);
+      }
+    } catch (err) {
+      setError(err.msg || "Failed to fetch books.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <>
@@ -120,31 +129,10 @@ const Home = () => {
               <p className="text-center text-red-500 mt-8">{error}</p>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mt-8">
-                {homeBooks.length > 0 ? (
-                  homeBooks.map((book) => (
-                    <div
-                      key={book._id}
-                      className="bg-slate-100 shadow-lg rounded-lg p-6 text-center"
-                    >
-                      <img
-                        src={book.bookImage}
-                        className="w-50 h-50 object-cover rounded-lg mb-4"
-                        alt={book.bookname}
-                      />
-                      <h3 className="text-xl font-semibold text-slate-700">
-                        {book.bookname}
-                      </h3>
-                      <p className="text-orange-600 font-semibold mt-2">
-                        Author: {book.author}
-                      </p>
-                      <Link
-                        to={`/viewBook/${book._id}`}
-                        className="mt-4 inline-block bg-orange-600 text-white font-semibold py-2 px-4 rounded hover:bg-orange-600 transition duration-300"
-                      >
-                        View Details
-                      </Link>
-                    </div>
-                  ))
+                {popularBooks.length > 0 ? (
+                   popularBooks.map((book) => (
+                    <BookCard key={book.id} book={book} />
+                   ))
                 ) : (
                   <p className="text-center text-gray-500">
                     No books available.
