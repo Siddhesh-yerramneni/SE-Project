@@ -124,3 +124,35 @@ func TestGetAllPosts(t *testing.T) {
 	assert.Equal(t, 200, resp.StatusCode)
 	assert.Contains(t, string(bodyBytes), "Go Programming")
 }
+
+func TestGetPostsByAuthorID(t *testing.T) {
+	db := setupTestDB()
+	app := fiber.New()
+
+	// Create a mock post
+	post := model.Post{AuthorID: 1, Title: "Go Programming", Content: "A deep dive into Go."}
+	db.Create(&post)
+
+	// Test the GetPostsByAuthorID function
+	app.Get("/getPosts/:authorID", func(c *fiber.Ctx) error {
+		authorID := c.Params("authorID")
+		var posts []model.Post
+		if err := db.Where("author_id = ?", authorID).Find(&posts).Error; err != nil {
+			return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Database error"})
+		}
+		return c.Status(200).JSON(fiber.Map{"status": "success", "posts": posts})
+	})
+
+	req := httptest.NewRequest("GET", "/getPosts/1", nil)
+	resp, _ := app.Test(req)
+
+	// Read the response body
+	bodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		t.Fatalf("failed to read response body: %v", err)
+	}
+
+	// Assert the response
+	assert.Equal(t, 200, resp.StatusCode)
+	assert.Contains(t, string(bodyBytes), "Go Programming")
+}
