@@ -93,3 +93,34 @@ func TestDeletePost(t *testing.T) {
 	assert.Equal(t, 200, resp.StatusCode)
 	assert.Contains(t, string(bodyBytes), "Post deleted successfully")
 }
+
+func TestGetAllPosts(t *testing.T) {
+	db := setupTestDB()
+	app := fiber.New()
+
+	// Create a mock post
+	post := model.Post{AuthorID: 1, Title: "Go Programming", Content: "A deep dive into Go."}
+	db.Create(&post)
+
+	// Test the GetAllPosts function
+	app.Get("/getPosts", func(c *fiber.Ctx) error {
+		var posts []model.Post
+		if err := db.Find(&posts).Error; err != nil {
+			return c.Status(500).JSON(fiber.Map{"status": "error", "message": "Database error"})
+		}
+		return c.Status(200).JSON(fiber.Map{"status": "success", "posts": posts})
+	})
+
+	req := httptest.NewRequest("GET", "/getPosts", nil)
+	resp, _ := app.Test(req)
+
+	// Read the response body
+	bodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		t.Fatalf("failed to read response body: %v", err)
+	}
+
+	// Assert the response
+	assert.Equal(t, 200, resp.StatusCode)
+	assert.Contains(t, string(bodyBytes), "Go Programming")
+}
