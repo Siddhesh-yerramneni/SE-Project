@@ -16,7 +16,7 @@ func ConnectDB() {
 
 	// Please Change the dsn of the database locally
 
-	dsn := "root:root@tcp(127.0.0.1:3306)/SEProject?charset=utf8mb4&parseTime=True&loc=Local"
+	dsn := "root:Qwerty@123@tcp(127.0.0.1:3306)/shelfwise?charset=utf8mb4&parseTime=True&loc=Local"
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
 		Logger: logger.Default.LogMode(logger.Error),
 	})

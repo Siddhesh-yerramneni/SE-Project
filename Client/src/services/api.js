@@ -165,26 +165,46 @@ export const getHomePage = async () => {
 // ------------------------ Post APIs ------------------------ //
 
 export const createPost = async (data) => {
-  const res = await axios.post(`${API_URL}/createPost`, data);
-  return res.data;
+  try {
+    const response = await axios.post(`${API_URL}/createPost`, data);
+    return response.data;
+  } catch (error) {
+    throw error.response ? error.response.data : { msg: "Failed to create post." };
+  }
 };
 
 export const getAllPosts = async () => {
-  const res = await axios.get(`${API_URL}/getPosts`);
-  return res.data;
+  try {
+    const response = await axios.get(`${API_URL}/getPosts`);
+    return response.data;
+  } catch (error) {
+    throw error.response ? error.response.data : { msg: "Failed to fetch posts." };
+  }
 };
 
 export const getPostsByAuthor = async (authorID) => {
-  const res = await axios.get(`${API_URL}/getPosts/${authorID}`);
-  return res.data;
+  try {
+    const response = await axios.get(`${API_URL}/getPosts/${authorID}`);
+    return response.data;
+  } catch (error) {
+    throw error.response ? error.response.data : { msg: "Failed to fetch author's posts." };
+  }
 };
 
 export const editPost = async (id, data) => {
-  const res = await axios.put(`${API_URL}/editPost/${id}`, data);
-  return res.data;
+  try {
+    const response = await axios.put(`${API_URL}/editPost/${id}`, data);
+    return response.data;
+  } catch (error) {
+    throw error.response ? error.response.data : { msg: "Failed to edit post." };
+  }
 };
 
 export const deletePost = async (id) => {
-  const res = await axios.delete(`${API_URL}/deletePost/${id}`);
-  return res.data;
+  try {
+    const response = await axios.delete(`${API_URL}/deletePost/${id}`);
+    return response.data;
+  } catch (error) {
+    throw error.response ? error.response.data : { msg: "Failed to delete post." };
+  }
 };
