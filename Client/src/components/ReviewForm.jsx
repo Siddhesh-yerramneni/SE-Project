@@ -7,29 +7,32 @@ const ReviewForm = ({ bookId, existingReview, refreshReviews }) => {
   const user = useSelector((state) => state.user);
 
   useEffect(() => {
-    setReviewText(existingReview ? existingReview.review : '');
+    if (existingReview?.review) {
+      setReviewText(existingReview.review);
+    } else {
+      setReviewText('');
+    }
   }, [existingReview]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Ensure the user is logged in before submitting the review.
+
     if (!user) {
       console.error("User not logged in. Please log in to submit a review.");
       return;
     }
 
-    const payload = {
-      book_id: bookId,
-      user_id: user.id,
-      review: reviewText,
-    };
-
     try {
       if (existingReview) {
         await editReview(existingReview.id, { review: reviewText });
       } else {
-        await addReview(payload);
+        await addReview({
+          book_id: bookId,
+          user_id: user.id,
+          review: reviewText,
+        });
       }
+
       setReviewText('');
       refreshReviews();
     } catch (err) {

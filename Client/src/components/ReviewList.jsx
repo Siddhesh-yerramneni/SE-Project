@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { getReviews, deleteReview } from '../services/api';
 import ReviewForm from './ReviewForm';
 
-const ReviewList = ({ bookId, currentUserId }) => {
+const ReviewList = ({ bookId, currentUserId, initialReviews = null }) => {
   const [reviews, setReviews] = useState([]);
   const [editingReview, setEditingReview] = useState(null);
 
@@ -16,8 +16,12 @@ const ReviewList = ({ bookId, currentUserId }) => {
   };
 
   useEffect(() => {
-    fetchReviews();
-  }, [bookId]);
+    if (initialReviews) {
+      setReviews(initialReviews);
+    } else {
+      fetchReviews();
+    }
+  }, [bookId, initialReviews]);
 
   const handleDelete = async (id) => {
     try {
@@ -59,7 +63,7 @@ const ReviewList = ({ bookId, currentUserId }) => {
             <li key={review.id} className="border p-3 rounded-md bg-white shadow-sm">
               <p className="text-gray-800">{review.review}</p>
               <div className="text-sm text-gray-500 mt-1">
-                Name: {review.user.name? review.user.name:review.user.username}
+                Name: {review.user.name ? review.user.name : review.user.username}
               </div>
               {currentUserId === review.user_id && (
                 <div className="flex gap-4 mt-2">

@@ -9,10 +9,7 @@ describe("Home Page", () => {
         <Home />
       </BrowserRouter>
     );
-
-    expect(
-      screen.getByText("Welcome to ShelfWise")
-    ).toBeInTheDocument();
+    expect(screen.getByText("Welcome to ShelfWise")).toBeInTheDocument();
     expect(
       screen.getByText("Discover your next great read today!")
     ).toBeInTheDocument();
@@ -24,10 +21,7 @@ describe("Home Page", () => {
         <Home />
       </BrowserRouter>
     );
-
-    expect(
-      screen.getByRole("link", { name: "Browse Books" })
-    ).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /Browse Books/i })).toBeInTheDocument();
   });
 
   test("renders categories", () => {
@@ -37,8 +31,12 @@ describe("Home Page", () => {
       </BrowserRouter>
     );
 
-    expect(screen.getByText("Fiction")).toBeInTheDocument();
+    // Assert visible category headings
+    expect(screen.getByText("Science-Fiction")).toBeInTheDocument();
     expect(screen.getByText("Non-Fiction")).toBeInTheDocument();
-    expect(screen.getByText("Science Fiction")).toBeInTheDocument();
+    expect(screen.getByText("Self-Help")).toBeInTheDocument();
+    expect(screen.getByText("Romance")).toBeInTheDocument();
+    expect(screen.getByText("Mystery")).toBeInTheDocument();
+    expect(screen.getByText("Fantasy")).toBeInTheDocument();
   });
 });

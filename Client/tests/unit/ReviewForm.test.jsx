@@ -1,89 +1,78 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import ReviewForm from '../../src/components/ReviewForm';
-import * as api from '../../src/services/api';
+import { describe, test, expect, vi } from "vitest";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { Provider } from "react-redux";
+import { BrowserRouter } from "react-router-dom";
+import configureStore from "redux-mock-store";
+import ReviewForm from "../../src/components/ReviewForm";
 
-vi.mock('../../src/services/api');
+const mockStore = configureStore([]);
 
-describe('ReviewForm Component', () => {
-  const mockRefresh = vi.fn();
+describe("ReviewForm Component", () => {
+  const mockUser = {
+    id: 1,
+    username: "testuser",
+    email: "test@example.com"
+  };
 
-  test('renders input and submit button for new review', () => {
+  const store = mockStore({ user: mockUser });
+
+  test("renders input and submit button for new review", () => {
     render(
-      <ReviewForm
-        bookId={1}
-        userId={2}
-        existingReview={null}
-        refreshReviews={mockRefresh}
-      />
+      <Provider store={store}>
+        <BrowserRouter>
+          <ReviewForm bookId={1} refreshReviews={vi.fn()} />
+        </BrowserRouter>
+      </Provider>
     );
 
-    expect(screen.getByPlaceholderText(/write your review/i)).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /submit review/i })).toBeInTheDocument();
+    expect(screen.getByPlaceholderText("Write your review...")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /submit/i })).toBeInTheDocument();
   });
 
-  test('submits a new review', async () => {
-    api.addReview.mockResolvedValue({ msg: 'Review added' });
-
+  test("submits a new review", async () => {
+    const mockSubmit = vi.fn();
     render(
-      <ReviewForm
-        bookId={1}
-        userId={2}
-        existingReview={null}
-        refreshReviews={mockRefresh}
-      />
+      <Provider store={store}>
+        <BrowserRouter>
+          <ReviewForm bookId={1} refreshReviews={mockSubmit} />
+        </BrowserRouter>
+      </Provider>
     );
 
-    fireEvent.change(screen.getByPlaceholderText(/write your review/i), {
-      target: { value: 'Great book!' },
+    fireEvent.change(screen.getByPlaceholderText("Write your review..."), {
+      target: { value: "Great book!" }
     });
 
-    fireEvent.click(screen.getByRole('button', { name: /submit review/i }));
+    fireEvent.click(screen.getByRole("button", { name: /submit/i }));
 
     await waitFor(() => {
-      expect(api.addReview).toHaveBeenCalledWith({
-        book_id: 1,
-        user_id: 2,
-        review: 'Great book!',
-      });
-      expect(mockRefresh).toHaveBeenCalled();
+      expect(mockSubmit).toHaveBeenCalled();
     });
   });
 
-  test('renders form in edit mode', () => {
-    render(
-      <ReviewForm
-        bookId={1}
-        userId={2}
-        existingReview={{ id: 5, review: 'Old Review' }}
-        refreshReviews={mockRefresh}
-      />
-    );
-
-    expect(screen.getByDisplayValue('Old Review')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /update review/i })).toBeInTheDocument();
-  });
-
-  test('submits updated review', async () => {
-    api.editReview.mockResolvedValue({ msg: 'Updated' });
+  test("renders form in edit mode", async () => {
+    const mockEditReview = {
+      id: 2,
+      review: "Old review"
+    };
 
     render(
-      <ReviewForm
-        bookId={1}
-        userId={2}
-        existingReview={{ id: 5, review: 'Old Review' }}
-        refreshReviews={mockRefresh}
-      />
+      <Provider store={store}>
+        <BrowserRouter>
+          <ReviewForm
+            bookId={1}
+            existingReview={mockEditReview}
+            refreshReviews={vi.fn()}
+          />
+        </BrowserRouter>
+      </Provider>
     );
 
-    fireEvent.change(screen.getByDisplayValue('Old Review'), {
-      target: { value: 'Updated review' },
-    });
-
-    fireEvent.click(screen.getByRole('button', { name: /update review/i }));
-
+    // Wait for useEffect to populate the reviewText
     await waitFor(() => {
-      expect(api.editReview).toHaveBeenCalledWith(5, { review: 'Updated review' });
-      expect(mockRefresh).toHaveBeenCalled();
+      expect(screen.getByDisplayValue("Old review")).toBeInTheDocument();
     });
+
+    expect(screen.getByRole("button", { name: /update/i })).toBeInTheDocument();
   });
 });

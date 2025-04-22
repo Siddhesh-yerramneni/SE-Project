@@ -14,7 +14,7 @@ describe("Add Book Page", () => {
     expect(screen.getByPlaceholderText("Author")).toBeInTheDocument();
     expect(screen.getByPlaceholderText("Description")).toBeInTheDocument();
     expect(screen.getByPlaceholderText("Price")).toBeInTheDocument();
-    expect(screen.getByPlaceholderText("Category")).toBeInTheDocument();
+    expect(screen.getByRole("combobox", { name: /category\*/i })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Add Book" })).toBeInTheDocument();
   });
 
@@ -25,16 +25,26 @@ describe("Add Book Page", () => {
       </BrowserRouter>
     );
 
-    fireEvent.change(screen.getByPlaceholderText("Book Name"), { target: { value: "Test Book" } });
-    fireEvent.change(screen.getByPlaceholderText("Author"), { target: { value: "Test Author" } });
-    fireEvent.change(screen.getByPlaceholderText("Description"), { target: { value: "Test Description" } });
-    fireEvent.change(screen.getByPlaceholderText("Price"), { target: { value: "199" } });
-    fireEvent.change(screen.getByPlaceholderText("Category"), { target: { value: "Testing" } });
+    fireEvent.change(screen.getByPlaceholderText("Book Name"), {
+      target: { value: "Test Book" },
+    });
+    fireEvent.change(screen.getByPlaceholderText("Author"), {
+      target: { value: "Test Author" },
+    });
+    fireEvent.change(screen.getByPlaceholderText("Description"), {
+      target: { value: "Test Description" },
+    });
+    fireEvent.change(screen.getByPlaceholderText("Price"), {
+      target: { value: "199" },
+    });
+    fireEvent.change(screen.getByRole("combobox", { name: /category\*/i }), {
+      target: { value: "Fantasy" },
+    });
 
     expect(screen.getByPlaceholderText("Book Name")).toHaveValue("Test Book");
     expect(screen.getByPlaceholderText("Author")).toHaveValue("Test Author");
     expect(screen.getByPlaceholderText("Description")).toHaveValue("Test Description");
     expect(screen.getByPlaceholderText("Price")).toHaveValue(199);
-    expect(screen.getByPlaceholderText("Category")).toHaveValue("Testing");
+    expect(screen.getByRole("combobox", { name: /category\*/i })).toHaveValue("Fantasy");
   });
 });

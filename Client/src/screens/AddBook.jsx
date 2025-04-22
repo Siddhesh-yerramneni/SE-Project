@@ -93,17 +93,21 @@ const AddBook = () => {
             className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-orange-400 focus:border-orange-400"
           />
 
+          <label htmlFor="category" className="block text-gray-700 font-semibold mb-2">
+            Category*
+          </label>
           <select
+            id="category"
             name="category"
             value={formData.category}
             onChange={handleChange}
             required
-            placeholder="category"
             className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-orange-400 focus:border-orange-400"
           >
-            <option value="" disabled selected>Select a category</option>
+            <option value="" disabled>
+              Select a category
+            </option>
             {categories.map((cat, index) => (
-           
               <option key={index} value={cat}>
                 {cat}
               </option>
