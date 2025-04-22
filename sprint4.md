@@ -1,5 +1,56 @@
 ### **Sprint 4**
 
+- **Post Feature Implementation**
+  - Developed full CRUD functionality for posts:
+    - `CreatePost`, `AllPosts`, `EditPost`, and `DeletePost` components integrated with API.
+    - Applied form validation (required fields) and error handling.
+  - **Unit Testing for Post Feature**
+    - Wrote Vitest/React Testing Library tests to cover:
+      - Rendering of components.
+      - API call mocks and form submission behavior.
+  - **Cypress E2E Testing for Post Feature**
+    - Automated end-to-end flows:
+      - Create a post and verify its appearance.
+      - Edit a post and confirm updates.
+      - Delete a post and ensure removal from the list.
+
+- **Review Feature Cypress Testing Completion**
+  - The Review module was implemented in Sprint 3 without Cypress tests.
+  - Completed Cypress end-to-end tests for Review feature in this sprint:
+    - Seeded a review via UI and asserted visibility.
+    - Deleted the review and confirmed removal.
+    - Validated API intercepts for review create/delete calls.
+
+Frontend unit and Cypress tests
+
+- **Frontend Unit Tests**
+  - **AllPosts**
+    - Verified rendering of the post list and heading.
+    - Mocked `fetchPosts` API calls and asserted it runs on component mount.
+  - **CreatePost**
+    - Simulated user input in title and content fields.
+    - Asserted API submission and redirection behavior on successful post creation.
+  - **EditPost**
+    - Mocked fetching existing post data.
+    - Ensured form fields are pre-populated and update submission triggers the correct API call.
+  - **DeletePost**
+    - Verified confirmation prompt appears.
+    - Asserted the delete callback is invoked and the list refreshes after deletion.
+
+- **Cypress End-to-End Tests**
+  - **Login Flow (`login.cy.js`)**
+    - Intercepted login API request.
+    - Validated navigation to `/allPosts` upon successful authentication.
+  - **Posts Module (`posts.cy.js`)**
+    - Logged in via UI before each test.
+    - **Display**: Confirmed the “All Posts” page shows existing posts.
+    - **Create**: Filled and submitted the new post form; verified post appears on the list.
+    - **Update**: Navigated to the edit page for a specific post, updated fields, and confirmed changes.
+    - **Delete**: Performed deletion and confirmed the post is removed from the list.
+  - **Review Module (`review.cy.js`)**
+    - **Seed Review**: Created a new review via the UI and asserted its visibility.
+    - **Delete Review**: Deleted the seeded review and asserted it no longer appears.
+
 ### **Test Functions- postsController_test.go**
 
 #### **1. `TestCreatePost`**
