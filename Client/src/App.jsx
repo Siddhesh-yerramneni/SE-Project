@@ -11,6 +11,9 @@ import ViewBook from "./screens/ViewBook.jsx";
 import CreatePost from './screens/CreatePost';
 import AllPosts from './screens/AllPosts';
 import EditPost from './screens/EditPost';
+import AboutUs from "./components/AboutUs.jsx";
+
+
 
 
 function App() {
@@ -22,6 +25,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/about" element={<AboutUs />} />
         <Route path="/allBooks" element={<AllBooks />} />
         <Route path="/allBooks/:category" element={<AllBooks />} />
         <Route path="/addBook" element={<AddBook />} />
