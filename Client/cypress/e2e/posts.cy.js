@@ -1,13 +1,19 @@
 describe('Posts Module', () => {
   const baseUrl = 'http://localhost:5173';
 
-  // this will run once, before any of the `it()` blocks
+  
   beforeEach(() => {
+    cy.intercept('POST', '/login').as('loginRequest');
+    cy.intercept('GET', '/getBooks').as('fetchBooks');
     cy.visit(`${baseUrl}/login`);
     cy.get("input[name='username']").type("test");
     cy.get("input[name='password']").type("test");
     cy.get("button[type='submit']").click();
+    cy.wait('@loginRequest').its('response.statusCode').should('eq', 200);
+    cy.wait('@fetchBooks');
+
     cy.visit(`${baseUrl}/allPosts`);
+    cy.location('pathname').should('include', '/allPosts');
   });
 
   it('should display all posts correctly', () => {

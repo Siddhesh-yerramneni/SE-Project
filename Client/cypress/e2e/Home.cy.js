@@ -20,7 +20,7 @@ describe("Home Page", () => {
         cy.contains("Categories").should("be.visible");
         cy.contains("Fiction").should("be.visible");
         cy.contains("Non-Fiction").should("be.visible");
-        cy.contains("Science Fiction").should("be.visible");
+        cy.contains("Science-Fiction").should("be.visible");
       });
       
   });

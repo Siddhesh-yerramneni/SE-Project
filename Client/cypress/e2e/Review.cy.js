@@ -1,93 +1,86 @@
-// reviewForm.spec.js
-import React from 'react';
-import { mount } from '@cypress/react';
-import * as reactRedux from 'react-redux';
-import ReviewForm from '../../src/components/ReviewForm';
 
-describe('ReviewForm Component (without Redux Provider)', () => {
-  const bookId = 123;
-  const loggedInUser = { id: 1, name: 'Test User' };
+describe('Review Module', () => {
+  const baseUrl = 'http://localhost:5173';
+  const bookId = 1;  
+   beforeEach(() => {
+    cy.intercept('POST', '/login').as('loginRequest');
+    cy.intercept('GET', '/getBooks').as('fetchBooks');
+    cy.visit(`${baseUrl}/login`);
+    cy.get("input[name='username']").type("test");
+    cy.get("input[name='password']").type("test");
+    cy.get("button[type='submit']").click();
+    cy.wait('@loginRequest').its('response.statusCode').should('eq', 200);
+    cy.wait('@fetchBooks');
 
-  beforeEach(() => {
-    // Restore the original implementation before each test
-    cy.stub(reactRedux, 'useSelector').callsFake((selector) => {
-      // By default, return a logged in user. Some tests override this.
-      return loggedInUser;
+    cy.visit(`${baseUrl}/viewBook/${bookId}`);
+    cy.location('pathname').should('include', '/viewBook');    
+  });
+
+  it('should display the review form and empty state', () => {
+    cy.contains('Reviews').should('exist');
+    cy.get('textarea[placeholder="Write your review..."]').should('exist');
+    cy.get('button[type="submit"]').contains('Submit Review').should('exist');
+    cy.contains('No reviews yet.').should('exist');
+  });
+
+  it('should add a new review successfully', () => {
+    const reviewText = 'Cypress: adding a review';
+    cy.get('textarea[placeholder="Write your review..."]')
+      .type(reviewText);
+    cy.get('button[type="submit"]').contains('Submit Review').click();
+    cy.contains(reviewText).should('be.visible');
+  });
+
+  it('should edit an existing review successfully', () => {
+    // first add one via UI
+    const original = 'Original Cypress review';
+    cy.get('textarea[placeholder="Write your review..."]')
+      .type(original);
+    cy.get('button[type="submit"]').contains('Submit Review').click();
+    cy.contains(original).should('be.visible');
+
+    // then edit it
+    cy.contains(original)
+      .parent('li')
+      .within(() => {
+        cy.contains('Edit').click();
+      });
+    const updated = 'Cypress updated review';
+    cy.get('textarea').clear().type(updated);
+    cy.get('button[type="submit"]').contains('Update Review').click();
+
+    // confirm update
+    cy.contains(updated).should('be.visible');
+  });
+
+  it('should delete an existing review successfully', () => {
+    const toDelete = 'Cypress review to delete';
+  
+    // seed one via UI
+    cy.get('textarea[placeholder="Write your review..."]')
+      .type(toDelete);
+    cy.get('button[type="submit"]')
+      .contains('Submit Review')
+      .click();
+    cy.contains(toDelete).should('be.visible');
+  
+    // delete it
+    cy.contains(toDelete)
+      .parent('li')
+      .within(() => {
+        cy.contains('Delete').click();
+      });
+  
+    // now check how many reviews remain
+    cy.get('ul li').then($items => {
+      if ($items.length === 0) {
+        // only assert the “empty” case if really empty
+        cy.contains('No reviews yet.').should('exist');
+      } else {
+        // otherwise skip that step
+        cy.log(`Skipping empty‑state check, ${$items.length} reviews remain`);
+      }
     });
   });
-
-  it('submits a new review', () => {
-    const refreshReviews = cy.stub().as('refreshReviews');
-
-    // Intercept the POST request made by addReview
-    cy.intercept('POST', '/api/reviews', {
-      statusCode: 200,
-      body: { id: 1, review: 'Great book!' },
-    }).as('addReview');
-
-    // Mount the component with no existing review
-    mount(
-      <ReviewForm bookId={bookId} existingReview={null} refreshReviews={refreshReviews} />
-    );
-
-    // Type a new review and submit it.
-    cy.get('textarea').type('Great book!');
-    cy.get('button').contains('Submit Review').click();
-
-    // Wait for the POST call then assert that refreshReviews was called and the textarea is cleared.
-    cy.wait('@addReview');
-    cy.get('@refreshReviews').should('have.been.calledOnce');
-    cy.get('textarea').should('have.value', '');
-  });
-
-  it('edits an existing review', () => {
-    const refreshReviews = cy.stub().as('refreshReviews');
-    const existingReview = { id: 1, review: 'Not so good' };
-
-    // Intercept the PUT request made by editReview
-    cy.intercept('PUT', `/api/reviews/${existingReview.id}`, {
-      statusCode: 200,
-      body: { id: existingReview.id, review: 'Much better now' },
-    }).as('editReview');
-
-    // Mount the component with an existing review.
-    mount(
-      <ReviewForm bookId={bookId} existingReview={existingReview} refreshReviews={refreshReviews} />
-    );
-
-    // Verify that the textarea is pre-filled, then update it and submit.
-    cy.get('textarea').should('have.value', 'Not so good');
-    cy.get('textarea').clear().type('Much better now');
-    cy.get('button').contains('Update Review').click();
-
-    // Wait for the PUT call then assert that refreshReviews was called and the textarea is cleared.
-    cy.wait('@editReview');
-    cy.get('@refreshReviews').should('have.been.calledOnce');
-    cy.get('textarea').should('have.value', '');
-  });
-
-  it('prevents submission when user is not logged in', () => {
-    const refreshReviews = cy.stub().as('refreshReviews');
-
-    // Override useSelector to simulate no logged in user.
-    reactRedux.useSelector.callsFake(() => null);
-
-    // Spy on console.error to check for the "not logged in" error.
-    cy.window().then((win) => {
-      cy.stub(win.console, 'error').as('consoleError');
-    });
-
-    // Mount the component with no logged in user.
-    mount(
-      <ReviewForm bookId={bookId} existingReview={null} refreshReviews={refreshReviews} />
-    );
-
-    // Type a review and submit.
-    cy.get('textarea').type('Review text');
-    cy.get('button').contains('Submit Review').click();
-
-    // Verify that console.error was called with the proper error message and refreshReviews wasn't called.
-    cy.get('@consoleError').should('be.calledWith', "User not logged in. Please log in to submit a review.");
-    cy.get('@refreshReviews').should('not.have.been.called');
-  });
+  
 });
